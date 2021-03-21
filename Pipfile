@@ -4,8 +4,13 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-requests = "==2.25.1"
 flask = "==1.1.2"
+flask-sqlalchemy = "*"
+python-dotenv = "==0.15.0"
+flask-migrate = "==2.7.0"
+psycopg2-binary = "*"
+flask-marshmallow = "*"
+marshmallow-sqlalchemy = "*"
 
 [dev-packages]
 ipdb = "==0.13.7"

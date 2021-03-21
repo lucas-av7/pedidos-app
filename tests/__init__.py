@@ -1,15 +1,12 @@
+from api import app
 import os
-import tempfile
 
-import pytest
+app.testing = True
+app_context = app.test_request_context()
+app_context.push()
 
-from api import create_app
+pg_user = os.getenv('PG_USER')
+pg_password = os.getenv('PG_PASSWORD')
+pg_database = os.getenv('PG_DATABASE')
 
-
-@pytest.fixture
-def client():
-    app = create_app()
-    app.testing = True
-    app_context = app.test_request_context()
-    app_context.push()
-    client = app.test_client()
+app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://{pg_user}:{pg_password}@localhost:5432/test"

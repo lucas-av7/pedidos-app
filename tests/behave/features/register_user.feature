@@ -10,8 +10,8 @@ Feature: Register a new user
     {
       "name": "Lucas Vasconcelos",
       "email": "lucas@email.com",
-      "phone": "(85) 90000-0000",
       "cpf": "000.000.000-00",
+      "phone": "(85) 90000-0000",
       "password": "password123"
     }
     """
