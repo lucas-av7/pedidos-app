@@ -1,28 +1,28 @@
-from api.models import db, ma, user_model
+from api.models import db, ma, users_model
 from api import app
 
 
-def test_if_has_user_model():
-    assert hasattr(user_model, "UserModel")
+def test_if_has_users_model():
+    assert hasattr(users_model, "UserModel")
 
 
 def test_if_UserModel_extends_db_model():
-    assert issubclass(user_model.UserModel, db.Model)
+    assert issubclass(users_model.UserModel, db.Model)
 
 
 def test_if_User_has_expectd_columns():
-    assert hasattr(user_model.UserModel, "id")
-    assert hasattr(user_model.UserModel, "name")
-    assert hasattr(user_model.UserModel, "email")
-    assert hasattr(user_model.UserModel, "phone")
-    assert hasattr(user_model.UserModel, "password")
-    assert hasattr(user_model.UserModel, "created_at")
-    assert hasattr(user_model.UserModel, "updated_at")
+    assert hasattr(users_model.UserModel, "id")
+    assert hasattr(users_model.UserModel, "name")
+    assert hasattr(users_model.UserModel, "email")
+    assert hasattr(users_model.UserModel, "phone")
+    assert hasattr(users_model.UserModel, "password")
+    assert hasattr(users_model.UserModel, "created_at")
+    assert hasattr(users_model.UserModel, "updated_at")
 
 
 def test_if_User_is_correctly_instantiated():
     global new_user  # for using in another test
-    new_user = user_model.UserModel(
+    new_user = users_model.UserModel(
         name="Lucas",
         email="lucas@email.com",
         phone="(00) 00000-0000",
@@ -37,20 +37,20 @@ def test_if_User_is_correctly_instantiated():
 
 
 def test_if_user_has_ma_schema():
-    assert hasattr(user_model, "UserSchema")
+    assert hasattr(users_model, "UserSchema")
 
 
 def test_if_UserSchema_extends_ma_sqlalchemy_schema():
-    assert issubclass(user_model.UserSchema, ma.SQLAlchemySchema)
+    assert issubclass(users_model.UserSchema, ma.SQLAlchemySchema)
 
 
 def test_if_UserSchema_has_Meta_and_points_to_UserModel():
-    assert hasattr(user_model.UserSchema, "Meta")
-    assert user_model.UserSchema.Meta.model == user_model.UserModel
+    assert hasattr(users_model.UserSchema, "Meta")
+    assert users_model.UserSchema.Meta.model == users_model.UserModel
 
 
 def test_if_UserSchema_returns_only_id_name_email():
-    user_schema = user_model.UserSchema()
+    user_schema = users_model.UserSchema()
 
     serialized = user_schema.dump(new_user)
 

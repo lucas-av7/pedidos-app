@@ -1,6 +1,6 @@
 import os
 from flask import Flask
-from .blueprints.user_blueprint import user_bp
+from .blueprints.users_blueprint import user_bp
 from .models import configure_db
 from dotenv import load_dotenv
 load_dotenv()

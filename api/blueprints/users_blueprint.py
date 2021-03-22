@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from api.models.user_model import UserModel, UserSchema
+from api.models.users_model import UserModel, UserSchema
 from api.models import db
 
 user_bp = Blueprint('user_bp', __name__)
