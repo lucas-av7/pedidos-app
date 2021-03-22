@@ -1,6 +1,7 @@
 import os
 from flask import Flask
-from .blueprints.users_blueprint import user_bp
+from .blueprints.users_blueprint import users_bp
+from .blueprints.users_address_blueprint import users_address_bp
 from .models import configure_db
 from dotenv import load_dotenv
 load_dotenv()
@@ -18,4 +19,5 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 configure_db(app)
 
-app.register_blueprint(user_bp, url_prefix='/api/users')
+app.register_blueprint(users_bp, url_prefix='/api/users')
+app.register_blueprint(users_address_bp, url_prefix='/api/users/address')

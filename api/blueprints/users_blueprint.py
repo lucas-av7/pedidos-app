@@ -1,68 +1,67 @@
 from flask import Blueprint, request
-from api.models.users_model import UserModel, UserSchema
+from api.models.users_model import UsersModel, UsersSchema
 from api.models import db
 
-user_bp = Blueprint('user_bp', __name__)
+users_bp = Blueprint('users_bp', __name__)
 
 
-@user_bp.route('/', methods=['POST'])
-def user_create():
-    if request.method == 'POST':
-        if request.is_json:
-            data = request.get_json()
+@users_bp.route('/', methods=['POST'])
+def users_create():
+    if request.method == 'POST' and request.is_json:
+        data = request.get_json()
 
-            required_fields = ["name", "email", "phone", "password"]
-            for field in required_fields:
-                if field not in data:
-                    response = {
-                        "status_code": 400,
-                        "message": "Fields missing in json"
-                    }
-
-                    return response, 400
-
-            if "@" not in data["email"] or "." not in data["email"]:
+        required_fields = ["name", "email", "phone", "password"]
+        for field in required_fields:
+            if field not in data:
                 response = {
                     "status_code": 400,
-                    "message": "The values of the JSON have invalid types"
+                    "message": "Fields missing in json"
                 }
 
                 return response, 400
 
-            email_exists = UserModel.query.filter_by(email=data["email"]).first()
-
-            if email_exists is not None:
-                response = {
-                    "status_code": 422,
-                    "message": "E-mail is already in use"
-                }
-
-                return response, 422
-
-            new_user = UserModel(
-                name=data["name"],
-                email=data["email"],
-                phone=data["phone"],
-                password=data["password"]
-            )
-
-            db.session.add(new_user)
-            db.session.commit()
-
-            user_schema = UserSchema()
-
+        if "@" not in data["email"] or "." not in data["email"]:
             response = {
-                "status_code": 201,
-                "message": "User registered successfully",
-                "data": user_schema.dump(new_user)
+                "status_code": 400,
+                "message": "The values of the JSON have invalid types"
             }
 
-            return response, 201
+            return response, 400
 
-        else:
+        email_exists = UsersModel.query.filter_by(email=data["email"]).first()
+
+        if email_exists is not None:
             response = {
-                "status_code": 406,
-                "message": "Payload is not a JSON"
+                "status_code": 422,
+                "message": "E-mail is already in use"
             }
 
-            return response, 406
+            return response, 422
+
+        new_user = UsersModel(
+            name=data["name"],
+            email=data["email"],
+            phone=data["phone"],
+            password=data["password"]
+        )
+
+        db.session.add(new_user)
+        db.session.commit()
+
+        users_schema = UsersSchema()
+
+        response = {
+            "status_code": 201,
+            "message": "User registered successfully",
+            "data": users_schema.dump(new_user)
+        }
+
+        return response, 201
+
+    else:
+        response = {
+            "status_code": 406,
+            "message": "Payload is not a JSON"
+        }
+
+        return response, 406
