@@ -15,9 +15,14 @@ def test_if_api_has_user_bluprint():
     assert "user_bp" in app.blueprints
 
 
-def test_if_has_register_route():
-    url = list(app.url_map.iter_rules('user_bp.user_create'))[0].rule
-    assert '/api/users/' == url
+def test_if_has_users_route():
+    rule = list(app.url_map.iter_rules('user_bp.user_create'))[0].rule
+    assert '/api/users/' == rule
+
+
+def test_if_users_route_accept_post():
+    methods = list(app.url_map.iter_rules('user_bp.user_create'))[0].methods
+    assert 'POST' in methods
 
 
 def test_if_register_user_with_success():
