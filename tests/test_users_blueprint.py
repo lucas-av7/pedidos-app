@@ -29,6 +29,7 @@ def test_if_returns_406_if_the_paylod_is_not_json():
     response = client.post(url_for('users_bp.users_create'), data="teste")
 
     expected_return = {
+        "status": "Error",
         "status_code": 406,
         "message": "Payload is not a JSON"
     }
@@ -41,6 +42,7 @@ def test_if_register_users_with_success():
     response = client.post(url_for('users_bp.users_create'), json=valid_user)
 
     expected_return = {
+        "status": "Success",
         "status_code": 201,
         "message": "User registered successfully",
         "data": {
@@ -60,6 +62,7 @@ def test_if_returns_422_if_users_already_exists():
     response = client.post(url_for('users_bp.users_create'), json=valid_user)
 
     expected_return = {
+        "status": "Error",
         "status_code": 422,
         "message": "E-mail is already in use",
     }
@@ -74,8 +77,9 @@ def test_if_returns_400_if_the_json_is_invalid():
     })
 
     expected_return = {
+        "status": "Error",
         "status_code": 400,
-        "message": "Fields missing in json",
+        "message": "Fields missing in JSON",
     }
 
     assert response.status_code == 400
@@ -89,6 +93,7 @@ def test_if_returns_400_if_the_email_is_invalid():
     response = client.post(url_for('users_bp.users_create'), json=invalid_email)
 
     expected_return = {
+        "status": "Error",
         "status_code": 400,
         "message": "The values of the JSON have invalid types",
     }

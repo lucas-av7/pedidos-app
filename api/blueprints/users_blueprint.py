@@ -14,14 +14,16 @@ def users_create():
         for field in required_fields:
             if field not in data:
                 response = {
+                    "status": "Error",
                     "status_code": 400,
-                    "message": "Fields missing in json"
+                    "message": "Fields missing in JSON"
                 }
 
                 return response, 400
 
         if "@" not in data["email"] or "." not in data["email"]:
             response = {
+                "status": "Error",
                 "status_code": 400,
                 "message": "The values of the JSON have invalid types"
             }
@@ -32,6 +34,7 @@ def users_create():
 
         if email_exists is not None:
             response = {
+                "status": "Error",
                 "status_code": 422,
                 "message": "E-mail is already in use"
             }
@@ -51,6 +54,7 @@ def users_create():
         users_schema = UsersSchema()
 
         response = {
+            "status": "Success",
             "status_code": 201,
             "message": "User registered successfully",
             "data": users_schema.dump(new_user)
@@ -60,6 +64,7 @@ def users_create():
 
     else:
         response = {
+            "status": "Error",
             "status_code": 406,
             "message": "Payload is not a JSON"
         }

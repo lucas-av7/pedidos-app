@@ -14,8 +14,9 @@ def users_address_create():
         for field in required_fields:
             if field not in data:
                 response = {
+                    "status": "Error",
                     "status_code": 400,
-                    "message": "Fields missing in json"
+                    "message": "Fields missing in JSON"
                 }
 
                 return response, 400
@@ -36,6 +37,7 @@ def users_address_create():
         users_address_schema = UsersAddressSchema()
 
         response = {
+            "status": "Success",
             "status_code": 201,
             "message": "Address registered successfully",
             "data": users_address_schema.dump(new_address)
@@ -45,6 +47,7 @@ def users_address_create():
 
     else:
         response = {
+            "status": "Error",
             "status_code": 406,
             "message": "Payload is not a JSON"
         }

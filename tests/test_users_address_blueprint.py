@@ -31,6 +31,7 @@ def test_if_returns_406_if_the_paylod_is_not_json():
     response = client.post(url_for('users_address_bp.users_address_create'), data="teste")
 
     expected_return = {
+        "status": "Error",
         "status_code": 406,
         "message": "Payload is not a JSON"
     }
@@ -43,6 +44,7 @@ def test_if_register_users_address_with_success():
     response = client.post(url_for('users_address_bp.users_address_create'), json=valid_address)
 
     expected_return = {
+        "status": "Success",
         "status_code": 201,
         "message": "Address registered successfully",
         "data": {
@@ -63,8 +65,9 @@ def test_if_returns_400_if_the_json_is_invalid():
     })
 
     expected_return = {
+        "status": "Error",
         "status_code": 400,
-        "message": "Fields missing in json",
+        "message": "Fields missing in JSON",
     }
 
     assert response.status_code == 400
