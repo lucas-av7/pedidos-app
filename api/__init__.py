@@ -18,4 +18,4 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 configure_db(app)
 
-app.register_blueprint(user_bp, url_prefix='/api/user')
+app.register_blueprint(user_bp, url_prefix='/api/users')

@@ -17,7 +17,7 @@ def test_if_api_has_user_bluprint():
 
 def test_if_has_register_route():
     url = list(app.url_map.iter_rules('user_bp.register'))[0].rule
-    assert '/api/user/register' == url
+    assert '/api/users/register' == url
 
 
 def test_if_register_user_with_success():
