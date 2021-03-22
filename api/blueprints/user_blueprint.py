@@ -20,7 +20,7 @@ def user_create():
                     }
 
                     return response, 400
-                
+
             if "@" not in data["email"] or "." not in data["email"]:
                 response = {
                     "status_code": 400,
@@ -58,3 +58,11 @@ def user_create():
             }
 
             return response, 201
+
+        else:
+            response = {
+                "status_code": 406,
+                "message": "Payload is not a JSON"
+            }
+
+            return response, 406

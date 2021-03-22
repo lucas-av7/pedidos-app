@@ -25,8 +25,19 @@ def test_if_users_route_accept_post():
     assert 'POST' in methods
 
 
-def test_if_register_user_with_success():
+def test_if_returns_406_if_the_paylod_is_not_json():
+    response = client.post(url_for('user_bp.user_create'), data="teste")
 
+    expected_return = {
+        "status_code": 406,
+        "message": "Payload is not a JSON"
+    }
+
+    assert response.status_code == 406
+    assert response.json == expected_return
+
+
+def test_if_register_user_with_success():
     response = client.post(url_for('user_bp.user_create'), json=valid_user)
 
     expected_return = {
