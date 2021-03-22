@@ -16,13 +16,13 @@ def test_if_api_has_user_bluprint():
 
 
 def test_if_has_register_route():
-    url = list(app.url_map.iter_rules('user_bp.register'))[0].rule
-    assert '/api/users/register' == url
+    url = list(app.url_map.iter_rules('user_bp.user_create'))[0].rule
+    assert '/api/users/' == url
 
 
 def test_if_register_user_with_success():
 
-    response = client.post(url_for('user_bp.register'), json=valid_user)
+    response = client.post(url_for('user_bp.user_create'), json=valid_user)
 
     expected_return = {
         "status_code": 201,
@@ -39,7 +39,7 @@ def test_if_register_user_with_success():
 
 
 def test_if_returns_422_if_user_already_exists():
-    response = client.post(url_for('user_bp.register'), json=valid_user)
+    response = client.post(url_for('user_bp.user_create'), json=valid_user)
 
     expected_return = {
         "status_code": 422,
@@ -51,7 +51,7 @@ def test_if_returns_422_if_user_already_exists():
 
 
 def test_if_returns_400_if_the_json_is_invalid():
-    response = client.post(url_for('user_bp.register'), json={
+    response = client.post(url_for('user_bp.user_create'), json={
         "name": "Lucas Vasconcelos",
     })
 
@@ -68,7 +68,7 @@ def test_if_returns_400_if_the_email_is_invalid():
     invalid_email = {**valid_user}
     invalid_email['email'] = "lucas"
 
-    response = client.post(url_for('user_bp.register'), json=invalid_email)
+    response = client.post(url_for('user_bp.user_create'), json=invalid_email)
 
     expected_return = {
         "status_code": 400,
