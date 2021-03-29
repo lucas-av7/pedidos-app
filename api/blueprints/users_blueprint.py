@@ -7,7 +7,16 @@ users_bp = Blueprint('users_bp', __name__)
 
 @users_bp.route('/users', methods=['POST'])
 def users_create():
-    if request.method == 'POST' and request.is_json:
+    if not request.is_json:
+        response = {
+            "status": "Error",
+            "status_code": 406,
+            "message": "Payload is not a JSON"
+        }
+
+        return response, 406
+
+    if request.method == 'POST':
         data = request.get_json()
 
         required_fields = ["name", "email", "phone", "password"]
@@ -61,12 +70,3 @@ def users_create():
         }
 
         return response, 201
-
-    else:
-        response = {
-            "status": "Error",
-            "status_code": 406,
-            "message": "Payload is not a JSON"
-        }
-
-        return response, 406
