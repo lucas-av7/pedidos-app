@@ -1,6 +1,6 @@
 from api import app
 from flask import url_for
-from . import client
+from tests import client
 
 valid_user = {
     "name": "Lucas Vasconcelos",
