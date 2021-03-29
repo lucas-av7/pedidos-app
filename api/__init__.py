@@ -13,6 +13,7 @@ pg_database = os.getenv('POSTGRES_DB')
 
 
 app = Flask(__name__)
+app.url_map.strict_slashes = False
 
 app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://{pg_user}:{pg_password}@localhost:5432/{pg_database}"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
