@@ -1,5 +1,4 @@
 from api.models import db, ma, users_model
-from api import app
 
 
 def test_if_has_users_model():
@@ -11,13 +10,9 @@ def test_if_UsersModel_extends_db_model():
 
 
 def test_if_users_has_expectd_columns():
-    assert hasattr(users_model.UsersModel, "id")
-    assert hasattr(users_model.UsersModel, "name")
-    assert hasattr(users_model.UsersModel, "email")
-    assert hasattr(users_model.UsersModel, "phone")
-    assert hasattr(users_model.UsersModel, "password")
-    assert hasattr(users_model.UsersModel, "created_at")
-    assert hasattr(users_model.UsersModel, "updated_at")
+    columns = ["id", "name", "email", "phone", "password", "created_at", "updated_at"]
+    for column in columns:
+        assert hasattr(users_model.UsersModel, column)
 
 
 def test_if_users_is_correctly_instantiated():

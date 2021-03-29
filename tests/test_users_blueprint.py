@@ -1,6 +1,5 @@
 from api import app
 from flask import url_for
-import os
 from . import client
 
 valid_user = {

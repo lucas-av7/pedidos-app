@@ -11,7 +11,7 @@ class UsersModel(db.Model):
     email = db.Column(db.String(255), nullable=False, unique=True)
     phone = db.Column(db.String(15), nullable=False)
     password = db.Column(db.String(255), nullable=False)
-    address = db.relationship('UsersAddressModel', backref='users', lazy=True)
+    address = db.relationship(UsersAddressModel, backref='users', lazy=True)
     created_at = db.Column(db.DateTime(), nullable=False, default=datetime.now())
     updated_at = db.Column(db.DateTime(), nullable=False, default=datetime.now())
 
