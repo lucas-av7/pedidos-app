@@ -5,7 +5,7 @@ from api.models import db
 users_address_bp = Blueprint('users_address_bp', __name__)
 
 
-@users_address_bp.route('/', methods=['POST'])
+@users_address_bp.route('/users/address', methods=['POST'])
 def users_address_create():
     if request.method == 'POST' and request.is_json:
         data = request.get_json()

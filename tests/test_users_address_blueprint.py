@@ -19,7 +19,7 @@ def test_if_api_has_users_adress_bluprint():
 
 def test_if_has_users_address_route():
     rule = list(app.url_map.iter_rules('users_address_bp.users_address_create'))[0].rule
-    assert '/api/users/address/' == rule
+    assert '/api/users/address' == rule
 
 
 def test_if_users_address_route_accept_post():

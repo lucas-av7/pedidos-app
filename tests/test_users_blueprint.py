@@ -16,7 +16,7 @@ def test_if_api_has_users_bluprint():
 
 def test_if_has_users_route():
     rule = list(app.url_map.iter_rules('users_bp.users_create'))[0].rule
-    assert '/api/users/' == rule
+    assert '/api/users' == rule
 
 
 def test_if_users_route_accept_post():
