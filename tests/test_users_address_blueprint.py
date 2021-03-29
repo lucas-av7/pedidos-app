@@ -19,7 +19,7 @@ def test_if_api_has_users_adress_bluprint():
 
 def test_if_has_users_address_route():
     rule = list(app.url_map.iter_rules('users_address_bp.users_address_create'))[0].rule
-    assert '/api/users/address' == rule
+    assert '/api/users/<user_id>/address' == rule
 
 
 def test_if_users_address_route_accept_post():
@@ -28,7 +28,7 @@ def test_if_users_address_route_accept_post():
 
 
 def test_if_returns_406_if_the_paylod_is_not_json():
-    response = client.post(url_for('users_address_bp.users_address_create'), data="teste")
+    response = client.post(url_for('users_address_bp.users_address_create', user_id=1), data="teste")
 
     expected_return = {
         "status": "Error",
@@ -41,7 +41,7 @@ def test_if_returns_406_if_the_paylod_is_not_json():
 
 
 def test_if_register_users_address_with_success():
-    response = client.post(url_for('users_address_bp.users_address_create'), json=valid_address)
+    response = client.post(url_for('users_address_bp.users_address_create', user_id=1), json=valid_address)
 
     expected_return = {
         "status": "Success",
@@ -60,7 +60,7 @@ def test_if_register_users_address_with_success():
 # TODO: test_if_users_is_on_db
 
 def test_if_returns_400_if_the_json_is_invalid():
-    response = client.post(url_for('users_address_bp.users_address_create'), json={
+    response = client.post(url_for('users_address_bp.users_address_create', user_id=1), json={
         "street": "Fake street",
     })
 

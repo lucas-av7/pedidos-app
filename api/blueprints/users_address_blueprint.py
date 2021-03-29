@@ -5,12 +5,12 @@ from api.models import db
 users_address_bp = Blueprint('users_address_bp', __name__)
 
 
-@users_address_bp.route('/users/address', methods=['POST'])
-def users_address_create():
+@users_address_bp.route('/users/<user_id>/address', methods=['POST'])
+def users_address_create(user_id):
     if request.method == 'POST' and request.is_json:
         data = request.get_json()
 
-        required_fields = ["user_id", "street", "number", "district", "zipcode", "city", "state"]
+        required_fields = ["street", "number", "district", "zipcode", "city", "state"]
         for field in required_fields:
             if field not in data:
                 response = {
@@ -22,7 +22,7 @@ def users_address_create():
                 return response, 400
 
         new_address = UsersAddressModel(
-            user_id=data["user_id"],
+            user_id=user_id,
             street=data["street"],
             number=data["number"],
             district=data["district"],

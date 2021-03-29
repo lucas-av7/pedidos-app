@@ -5,7 +5,7 @@
 | Name                                                       | Method   | Path                       |
 |------------------------------------------------------------|----------|----------------------------|
 | [users_create](#users_create)                              | POST     | /api/users                 |
-| [users_address_create](#users_address_create)              | POST     | /api/users/address         |
+| [users_address_create](#users_address_create)              | POST     | /api/users/{id}/address    |
 
 ## Route methods expected JSON and response
 
@@ -53,7 +53,6 @@ __Expected JSON:__
 
 ```json
 {
-  "user_id": 1,
   "street": "Fake street",
   "number": "S/N",
   "district": "Fake district",
@@ -91,7 +90,6 @@ Errors
 
 - 400: Fields missing in JSON
 - 406: Payload is not a JSON
-
 
 ## Error response example
 
