@@ -14,7 +14,7 @@ def test_if_api_has_405_error_handler():
         "status_code": 405,
         "message": "Method not allowed"
     }
-    assert expected_error == json.loads(api.not_allowed("")[0].response[0])
+    assert expected_error == json.loads(api.not_allowed("")[0])
 
 
 def test_if_api_has_404_error_handler():
@@ -24,4 +24,4 @@ def test_if_api_has_404_error_handler():
         "status_code": 404,
         "message": "API endpoint not found"
     }
-    assert expected_error == json.loads(api.not_found("")[0].response[0])
+    assert expected_error == json.loads(api.not_found("")[0])

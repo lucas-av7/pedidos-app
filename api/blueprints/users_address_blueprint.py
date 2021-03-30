@@ -1,5 +1,6 @@
 from flask import Blueprint, request
 from api.models.users_address_model import UsersAddressModel, UsersAddressSchema
+from api.utils.responses import error_response
 from api.models import db
 
 users_address_bp = Blueprint('users_address_bp', __name__)
@@ -7,19 +8,16 @@ users_address_bp = Blueprint('users_address_bp', __name__)
 
 @users_address_bp.route('/users/<user_id>/address', methods=['POST'])
 def users_address_create(user_id):
-    if request.method == 'POST' and request.is_json:
+    if not request.is_json:
+        return error_response(msg="Payload is not a JSON", code=406)
+
+    if request.method == 'POST':
         data = request.get_json()
 
         required_fields = ["street", "number", "district", "zipcode", "city", "state"]
         for field in required_fields:
             if field not in data:
-                response = {
-                    "status": "Error",
-                    "status_code": 400,
-                    "message": "Fields missing in JSON"
-                }
-
-                return response, 400
+                return error_response(msg="Fields missing in JSON", code=400)
 
         new_address = UsersAddressModel(
             user_id=user_id,
@@ -44,12 +42,3 @@ def users_address_create(user_id):
         }
 
         return response, 201
-
-    else:
-        response = {
-            "status": "Error",
-            "status_code": 406,
-            "message": "Payload is not a JSON"
-        }
-
-        return response, 406

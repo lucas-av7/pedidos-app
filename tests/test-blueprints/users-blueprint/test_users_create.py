@@ -1,6 +1,7 @@
 from api import app
 from flask import url_for
 from tests import client
+import json
 
 valid_user = {
     "name": "Lucas Vasconcelos",
@@ -34,7 +35,7 @@ def test_if_returns_406_if_the_paylod_is_not_json():
     }
 
     assert response.status_code == 406
-    assert response.json == expected_return
+    assert json.loads(response.data) == expected_return
 
 
 def test_if_register_users_with_success():
@@ -52,7 +53,7 @@ def test_if_register_users_with_success():
     }
 
     assert response.status_code == 201
-    assert response.json == expected_return
+    assert json.loads(response.data) == expected_return
 
 
 # TODO: test_if_users_is_on_db
@@ -67,7 +68,7 @@ def test_if_returns_422_if_users_already_exists():
     }
 
     assert response.status_code == 422
-    assert response.json == expected_return
+    assert json.loads(response.data) == expected_return
 
 
 def test_if_returns_400_if_the_json_is_invalid():
@@ -82,7 +83,7 @@ def test_if_returns_400_if_the_json_is_invalid():
     }
 
     assert response.status_code == 400
-    assert response.json == expected_return
+    assert json.loads(response.data) == expected_return
 
 
 def test_if_returns_400_if_the_email_is_invalid():
@@ -98,4 +99,4 @@ def test_if_returns_400_if_the_email_is_invalid():
     }
 
     assert response.status_code == 400
-    assert response.json == expected_return
+    assert json.loads(response.data) == expected_return

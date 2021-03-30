@@ -1,5 +1,6 @@
 from flask import Blueprint, request
 from api.models.users_model import UsersModel, UsersSchema
+from api.utils.responses import error_response
 from api.models import db
 
 users_bp = Blueprint('users_bp', __name__)
@@ -8,13 +9,7 @@ users_bp = Blueprint('users_bp', __name__)
 @users_bp.route('/users', methods=['POST'])
 def users_create():
     if not request.is_json:
-        response = {
-            "status": "Error",
-            "status_code": 406,
-            "message": "Payload is not a JSON"
-        }
-
-        return response, 406
+        return error_response(msg="Payload is not a JSON", code=406)
 
     if request.method == 'POST':
         data = request.get_json()
@@ -22,33 +17,15 @@ def users_create():
         required_fields = ["name", "email", "phone", "password"]
         for field in required_fields:
             if field not in data:
-                response = {
-                    "status": "Error",
-                    "status_code": 400,
-                    "message": "Fields missing in JSON"
-                }
-
-                return response, 400
+                return error_response(msg="Fields missing in JSON", code=400)
 
         if "@" not in data["email"] or "." not in data["email"]:
-            response = {
-                "status": "Error",
-                "status_code": 400,
-                "message": "The values of the JSON have invalid types"
-            }
-
-            return response, 400
+            return error_response(msg="The values of the JSON have invalid types", code=400)
 
         email_exists = UsersModel.query.filter_by(email=data["email"]).first()
 
         if email_exists is not None:
-            response = {
-                "status": "Error",
-                "status_code": 422,
-                "message": "E-mail is already in use"
-            }
-
-            return response, 422
+            return error_response(msg="E-mail is already in use", code=422)
 
         new_user = UsersModel(
             name=data["name"],

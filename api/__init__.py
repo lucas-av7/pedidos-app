@@ -1,9 +1,10 @@
 import os
-from flask import Flask, abort, jsonify
+from flask import Flask
 from .blueprints.users_blueprint import users_bp
 from .blueprints.users_address_blueprint import users_address_bp
 from .models import configure_db
 from dotenv import load_dotenv
+from .utils.responses import error_response
 load_dotenv()
 
 
@@ -27,17 +28,9 @@ app.register_blueprint(users_address_bp, url_prefix='/api')
 # Custom error response for all api endpoints
 @app.errorhandler(405)
 def not_allowed(e):
-    return jsonify({
-        "status": "Error",
-        "status_code": 405,
-        "message": "Method not allowed"
-    }), 405
+    return error_response(msg="Method not allowed", code=405)
 
 
 @app.errorhandler(404)
 def not_found(e):
-    return jsonify({
-        "status": "Error",
-        "status_code": 404,
-        "message": "API endpoint not found"
-    }), 404
+    return error_response(msg="API endpoint not found", code=404)
