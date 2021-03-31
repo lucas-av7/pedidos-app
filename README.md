@@ -2,10 +2,11 @@
 
 ## App route list
 
-| Name                                                       | Method   | Path                       |
-|------------------------------------------------------------|----------|----------------------------|
-| [users_create](#users_create)                              | POST     | /api/users                 |
-| [users_address_create](#users_address_create)              | POST     | /api/users/{id}/address    |
+| Name                                                   | Method   | Path                                         |
+|--------------------------------------------------------|----------|----------------------------------------------|
+| [users_create](#users_create)                          | POST     | /api/users                                   |
+| [users_address_create](#users_address_create)          | POST     | /api/users/{user_id}/address                 |
+| [users_address_edit](#users_address_edit)              | POST     | /api/users/{user_id}/address/{address_id}    |
 
 ## Route methods expected JSON and response
 
@@ -75,6 +76,50 @@ Success - 201
     "id": 1,
     "user_id": 1,
     "street": "Fake street",
+    "number": "S/N",
+    "district": "Fake district",
+    "zipcode": "60000-000",
+    "city": "Fake city",
+    "state": "Fake state"
+  }
+}
+```
+
+Errors
+
+`[status_code]: [message]`
+
+- 400: Fields missing in JSON
+- 406: Payload is not a JSON
+
+### users_address_edit
+
+__Expected JSON:__
+
+```json
+{
+  "street": "Edited",
+  "number": "S/N",
+  "district": "Fake district",
+  "zipcode": "60000-000",
+  "city": "Fake city",
+  "state": "Fake state"
+}
+```
+
+__Response:__
+
+Success - 200
+
+```json
+{
+  "status": "Success",
+  "status_code": 200,
+  "message": "Address edited successfully",
+  "data": {
+    "id": 1,
+    "user_id": 1,
+    "street": "Edited",
     "number": "S/N",
     "district": "Fake district",
     "zipcode": "60000-000",
