@@ -134,6 +134,7 @@ Errors
 `[status_code]: [message]`
 
 - 400: Fields missing in JSON
+- 404: Address not found
 - 406: Payload is not a JSON
 
 ## Error response example

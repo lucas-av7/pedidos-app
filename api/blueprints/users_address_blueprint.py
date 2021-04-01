@@ -51,14 +51,16 @@ def users_address_edit(user_id, address_id):
         return error_response(msg="Payload is not a JSON", code=406)
 
     if request.method == "PUT":
-        data = request.get_json()
+        address = UsersAddressModel.query.filter_by(id=address_id, user_id=user_id).first()
+        if not address:
+            return error_response(msg="Address not found", code=404)
 
         required_fields = ["street", "number", "district", "zipcode", "city", "state"]
+
+        data = request.get_json()
         for field in required_fields:
             if field not in data:
                 return error_response(msg="Fields missing in JSON", code=400)
-
-        address = UsersAddressModel.query.filter_by(id=address_id, user_id=user_id).first()
 
         address.street = data["street"]
         address.number = data["number"]
