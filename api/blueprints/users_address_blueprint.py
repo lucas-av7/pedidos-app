@@ -30,19 +30,25 @@ def users_address_create(user_id):
             state=data["state"]
         )
 
-        db.session.add(new_address)
-        db.session.commit()
+        try:
+            db.session.add(new_address)
+            db.session.commit()
 
-        users_address_schema = UsersAddressSchema()
+            users_address_schema = UsersAddressSchema()
 
-        response = {
-            "status": "Success",
-            "status_code": 201,
-            "message": "Address registered successfully",
-            "data": users_address_schema.dump(new_address)
-        }
+            response = {
+                "status": "Success",
+                "status_code": 201,
+                "message": "Address registered successfully",
+                "data": users_address_schema.dump(new_address)
+            }
 
-        return response, 201
+            return response, 201
+        except Exception:
+            db.session.rollback()
+            return error_response(msg="Unable to execute", code=500)
+        finally:
+            db.session.close()
 
 
 @users_address_bp.route('/users/<user_id>/address/<address_id>', methods=["PUT"])
@@ -51,34 +57,40 @@ def users_address_edit(user_id, address_id):
         return error_response(msg="Payload is not a JSON", code=406)
 
     if request.method == "PUT":
-        address = UsersAddressModel.query.filter_by(id=address_id, user_id=user_id).first()
-        if not address:
-            return error_response(msg="Address not found", code=404)
+        try:
+            address = UsersAddressModel.query.filter_by(id=address_id, user_id=user_id).first()
+            if not address:
+                return error_response(msg="Address not found", code=404)
 
-        required_fields = ["street", "number", "district", "zipcode", "city", "state"]
+            required_fields = ["street", "number", "district", "zipcode", "city", "state"]
 
-        data = request.get_json()
-        for field in required_fields:
-            if field not in data:
-                return error_response(msg="Fields missing in JSON", code=400)
+            data = request.get_json()
+            for field in required_fields:
+                if field not in data:
+                    return error_response(msg="Fields missing in JSON", code=400)
 
-        address.street = data["street"]
-        address.number = data["number"]
-        address.district = data["district"]
-        address.zipcode = data["zipcode"]
-        address.city = data["city"]
-        address.state = data["state"]
-        address.updated_at = datetime.now()
+            address.street = data["street"]
+            address.number = data["number"]
+            address.district = data["district"]
+            address.zipcode = data["zipcode"]
+            address.city = data["city"]
+            address.state = data["state"]
+            address.updated_at = datetime.now()
 
-        db.session.commit()
+            db.session.commit()
 
-        users_address_schema = UsersAddressSchema()
+            users_address_schema = UsersAddressSchema()
 
-        response = {
-            "status": "Success",
-            "status_code": 200,
-            "message": "Address edited successfully",
-            "data": users_address_schema.dump(address)
-        }
+            response = {
+                "status": "Success",
+                "status_code": 200,
+                "message": "Address edited successfully",
+                "data": users_address_schema.dump(address)
+            }
 
-        return response, 200
+            return response, 200
+        except Exception:
+            db.session.rollback()
+            return error_response(msg="Unable to execute", code=500)
+        finally:
+            db.session.close()

@@ -22,28 +22,34 @@ def users_create():
         if "@" not in data["email"] or "." not in data["email"]:
             return error_response(msg="The values of the JSON have invalid types", code=400)
 
-        email_exists = UsersModel.query.filter_by(email=data["email"]).first()
+        try:
+            email_exists = UsersModel.query.filter_by(email=data["email"]).first()
 
-        if email_exists is not None:
-            return error_response(msg="E-mail is already in use", code=422)
+            if email_exists is not None:
+                return error_response(msg="E-mail is already in use", code=422)
 
-        new_user = UsersModel(
-            name=data["name"],
-            email=data["email"],
-            phone=data["phone"],
-            password=data["password"]
-        )
+            new_user = UsersModel(
+                name=data["name"],
+                email=data["email"],
+                phone=data["phone"],
+                password=data["password"]
+            )
 
-        db.session.add(new_user)
-        db.session.commit()
+            db.session.add(new_user)
+            db.session.commit()
 
-        users_schema = UsersSchema()
+            users_schema = UsersSchema()
 
-        response = {
-            "status": "Success",
-            "status_code": 201,
-            "message": "User registered successfully",
-            "data": users_schema.dump(new_user)
-        }
+            response = {
+                "status": "Success",
+                "status_code": 201,
+                "message": "User registered successfully",
+                "data": users_schema.dump(new_user)
+            }
 
-        return response, 201
+            return response, 201
+        except Exception:
+            db.session.rollback()
+            return error_response(msg="Unable to execute", code=500)
+        finally:
+            db.session.close()

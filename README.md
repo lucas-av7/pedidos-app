@@ -47,6 +47,7 @@ Errors
 - 400: The values of the JSON have invalid types
 - 406: Payload is not a JSON
 - 422: E-mail is already in use
+- 500: Unable to execute
 
 ### users_address_create
 
@@ -91,6 +92,7 @@ Errors
 
 - 400: Fields missing in JSON
 - 406: Payload is not a JSON
+- 500: Unable to execute
 
 ### users_address_edit
 
@@ -136,6 +138,7 @@ Errors
 - 400: Fields missing in JSON
 - 404: Address not found
 - 406: Payload is not a JSON
+- 500: Unable to execute
 
 ## Error response example
 
