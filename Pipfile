@@ -11,12 +11,12 @@ flask-migrate = "==2.7.0"
 psycopg2-binary = "*"
 flask-marshmallow = "*"
 marshmallow-sqlalchemy = "*"
+pyjwt = "==2.0.1"
 
 [dev-packages]
 ipdb = "==0.13.7"
 pytest = "==6.2.2"
 coverage = "*"
-pytest-mock = "*"
 
 [requires]
 python_version = "3.8"

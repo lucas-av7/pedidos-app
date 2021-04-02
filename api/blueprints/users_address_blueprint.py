@@ -1,6 +1,7 @@
 from flask import Blueprint, request
 from api.models.users_address_model import UsersAddressModel, UsersAddressSchema
 from api.utils.responses import error_response
+from api.utils.decorators import token_required
 from api.models import db
 from datetime import datetime
 
@@ -52,9 +53,13 @@ def users_address_create(user_id):
 
 
 @users_address_bp.route('/users/<user_id>/address/<address_id>', methods=["PUT"])
-def users_address_edit(user_id, address_id):
+@token_required
+def users_address_edit(current_user, user_id, address_id):
     if not request.is_json:
         return error_response(msg="Payload is not a JSON", code=406)
+
+    if str(current_user.id) != user_id:
+        return error_response(msg="Could not verify", code=401)
 
     if request.method == "PUT":
         try:

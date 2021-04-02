@@ -4,8 +4,8 @@ from tests import client
 import json
 
 valid_user = {
-    "name": "Lucas Vasconcelos",
-    "email": "lucas@email.com",
+    "name": "Lucas Vasconcelos 2",
+    "email": "lucas_2@email.com",
     "phone": "(85) 90000-0000",
     "password": "password123"
 }
@@ -46,9 +46,9 @@ def test_if_register_users_with_success():
         "status_code": 201,
         "message": "User registered successfully",
         "data": {
-            "id": 1,
-            "name": "Lucas Vasconcelos",
-            "email": "lucas@email.com"
+            "id": 2,
+            "name": "Lucas Vasconcelos 2",
+            "email": "lucas_2@email.com"
         }
     }
 
