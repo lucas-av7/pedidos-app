@@ -56,6 +56,30 @@ def users_address_create(current_user, user_id):
             db.session.close()
 
 
+@users_address_bp.route('/users/<user_id>/address', methods=['GET'])
+@token_required
+def users_address_get_all(current_user, user_id):
+    if str(current_user.id) != user_id:
+        return error_response(msg="Could not verify", code=401)
+
+    if request.method == "GET":
+        try:
+            addresses = UsersAddressModel.query.filter_by(user_id=user_id).all()
+            users_addresses_schema = UsersAddressSchema(many=True)
+            response = {
+                "status": "Success",
+                "status_code": 200,
+                "message": "Addresses received successfully",
+                "data": {
+                    "user_id": current_user.id,
+                    "addresses": users_addresses_schema.dump(addresses)
+                }
+            }
+            return response, 200
+        except Exception:
+            return error_response(msg="Unable to execute", code=500)
+
+
 @users_address_bp.route('/users/<user_id>/address/<address_id>', methods=["PUT"])
 @token_required
 def users_address_edit(current_user, user_id, address_id):

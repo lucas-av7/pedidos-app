@@ -7,6 +7,7 @@
 | [login](#login)                                        | POST     | /api/login                                   |
 | [users_create](#users_create)                          | POST     | /api/users                                   |
 | [users_address_create](#users_address_create) *        | POST     | /api/users/{user_id}/address                 |
+| [users_address_get_all](#users_address_get_all) *      | GET      | /api/users/{user_id}/address                 |
 | [users_address_edit](#users_address_edit) *            | PUT      | /api/users/{user_id}/address/{address_id}    |
 | [users_address_delete](#users_address_delete) *        | DELETE   | /api/users/{user_id}/address/{address_id}    |
 
@@ -120,7 +121,6 @@ Success - 201
   "message": "Address registered successfully",
   "data": {
     "id": 1,
-    "user_id": 1,
     "street": "Fake street",
     "number": "S/N",
     "district": "Fake district",
@@ -138,6 +138,39 @@ Errors
 - 400: Fields missing in JSON
 - 401: Could not verify
 - 406: Payload is not a JSON
+- 500: Unable to execute
+
+### users_address_get_all
+
+__Response:__
+
+Success - 200
+
+```json
+{
+  "status": "Success",
+  "status_code": 200,
+  "message": "Addresses received successfully",
+  "data": {
+    "user_id": 1,
+    "addresses": [{
+        "id": 1,
+        "street": "Fake street",
+        "number": "S/N",
+        "district": "Fake district",
+        "zipcode": "60000-000",
+        "city": "Fake city",
+        "state": "Fake state"
+    }]
+  }
+}
+```
+
+Errors
+
+`[status_code]: [message]`
+
+- 401: Could not verify
 - 500: Unable to execute
 
 ### users_address_edit
@@ -166,7 +199,6 @@ Success - 200
   "message": "Address edited successfully",
   "data": {
     "id": 1,
-    "user_id": 1,
     "street": "Edited",
     "number": "S/N",
     "district": "Fake district",

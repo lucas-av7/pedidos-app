@@ -61,12 +61,12 @@ def test_if_UsersAddressSchema_returns_all_fields_except_create_and_update():
     serialized = users_address_schema.dump(new_address)
 
     assert "id" in serialized
-    assert "user_id" in serialized
     assert "street" in serialized
     assert "number" in serialized
     assert "district" in serialized
     assert "zipcode" in serialized
     assert "city" in serialized
     assert "state" in serialized
+    assert "user_id" not in serialized
     assert "created_at" not in serialized
     assert "updated_at" not in serialized

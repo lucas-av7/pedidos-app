@@ -44,13 +44,16 @@ def test_if_returns_406_if_the_paylod_is_not_json():
 def test_if_register_users_address_with_success():
     response = client.post(url_for('users_address_bp.users_address_create', user_id=1), json=valid_address)
 
+    address = {**valid_address}
+    address.pop("user_id")
+
     expected_return = {
         "status": "Success",
         "status_code": 201,
         "message": "Address registered successfully",
         "data": {
             "id": 1,
-            **valid_address
+            **address
         }
     }
 

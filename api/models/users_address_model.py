@@ -25,7 +25,6 @@ class UsersAddressSchema(ma.SQLAlchemySchema):
         model = UsersAddressModel
 
     id = ma.auto_field()
-    user_id = ma.auto_field()
     street = ma.auto_field()
     number = ma.auto_field()
     district = ma.auto_field()

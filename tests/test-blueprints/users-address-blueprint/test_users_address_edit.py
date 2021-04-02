@@ -46,7 +46,6 @@ def test_if_edit_users_address_with_success():
         "message": "Address edited successfully",
         "data": {
             "id": 1,
-            "user_id": 1,
             **edited_valid_address
         }
     }
