@@ -73,3 +73,16 @@ def test_if_returns_400_if_the_json_is_invalid():
 
     assert response.status_code == 400
     assert json.loads(response.data) == expected_return
+
+
+def test_if_returns_401_if_user_id_doesnt_match():
+    response = client.post(url_for('users_address_bp.users_address_create', user_id=2), json=valid_address)
+
+    expected_return = {
+        "status": "Error",
+        "status_code": 401,
+        "message": "Could not verify",
+    }
+
+    assert response.status_code == 401
+    assert json.loads(response.data) == expected_return

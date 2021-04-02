@@ -6,7 +6,7 @@
 |--------------------------------------------------------|----------|----------------------------------------------|
 | [login](#login)                                        | POST     | /api/login                                   |
 | [users_create](#users_create)                          | POST     | /api/users                                   |
-| [users_address_create](#users_address_create)          | POST     | /api/users/{user_id}/address                 |
+| [users_address_create](#users_address_create) *        | POST     | /api/users/{user_id}/address                 |
 | [users_address_edit](#users_address_edit) *            | POST     | /api/users/{user_id}/address/{address_id}    |
 
 \* [Authorization header required](#authorization-header-required)
@@ -93,7 +93,7 @@ Errors
 - 422: E-mail is already in use
 - 500: Unable to execute
 
-### users_address_create
+### users_address_create [*](#authorization-header-required)
 
 __Expected JSON:__
 

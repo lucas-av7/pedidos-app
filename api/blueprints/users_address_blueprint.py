@@ -9,9 +9,13 @@ users_address_bp = Blueprint('users_address_bp', __name__)
 
 
 @users_address_bp.route('/users/<user_id>/address', methods=['POST'])
-def users_address_create(user_id):
+@token_required
+def users_address_create(current_user, user_id):
     if not request.is_json:
         return error_response(msg="Payload is not a JSON", code=406)
+
+    if str(current_user.id) != user_id:
+        return error_response(msg="Could not verify", code=401)
 
     if request.method == 'POST':
         data = request.get_json()
