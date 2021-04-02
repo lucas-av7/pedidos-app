@@ -103,3 +103,33 @@ def users_address_edit(current_user, user_id, address_id):
             return error_response(msg="Unable to execute", code=500)
         finally:
             db.session.close()
+
+
+@users_address_bp.route('/users/<user_id>/address/<address_id>', methods=["DELETE"])
+@token_required
+def users_address_delete(current_user, user_id, address_id):
+    if str(current_user.id) != user_id:
+        return error_response(msg="Could not verify", code=401)
+
+    if request.method == "DELETE":
+        try:
+            address = UsersAddressModel.query.filter_by(id=address_id, user_id=user_id).first()
+
+            if not address:
+                return error_response(msg="Address not found", code=404)
+
+            db.session.delete(address)
+            db.session.commit()
+
+            response = {
+                "status": "Success",
+                "status_code": 200,
+                "message": "Address deleted successfully",
+            }
+
+            return response, 200
+        except Exception:
+            db.session.rollback()
+            return error_response(msg="Unable to execute", code=500)
+        finally:
+            db.session.close()

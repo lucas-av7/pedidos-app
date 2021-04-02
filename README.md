@@ -8,6 +8,7 @@
 | [users_create](#users_create)                          | POST     | /api/users                                   |
 | [users_address_create](#users_address_create) *        | POST     | /api/users/{user_id}/address                 |
 | [users_address_edit](#users_address_edit) *            | PUT      | /api/users/{user_id}/address/{address_id}    |
+| [users_address_delete](#users_address_delete) *        | DELETE   | /api/users/{user_id}/address/{address_id}    |
 
 \* [Authorization header required](#authorization-header-required)
 
@@ -135,6 +136,7 @@ Errors
 `[status_code]: [message]`
 
 - 400: Fields missing in JSON
+- 401: Could not verify
 - 406: Payload is not a JSON
 - 500: Unable to execute
 
@@ -180,8 +182,31 @@ Errors
 `[status_code]: [message]`
 
 - 400: Fields missing in JSON
+- 401: Could not verify
 - 404: Address not found
 - 406: Payload is not a JSON
+- 500: Unable to execute
+
+### users_address_delete
+
+__Response:__
+
+Success - 200
+
+```json
+{
+  "status": "Success",
+  "status_code": 200,
+  "message": "Address deleted successfully"
+}
+```
+
+Errors
+
+`[status_code]: [message]`
+
+- 401: Could not verify
+- 404: Address not found
 - 500: Unable to execute
 
 ## Error response example

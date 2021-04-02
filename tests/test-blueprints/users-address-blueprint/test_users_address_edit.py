@@ -71,7 +71,7 @@ def test_if_returns_400_if_the_json_is_invalid():
     assert json.loads(response.data) == expected_return
 
 
-def test_if_returns_404_if_the_address_doesnt_exis():
+def test_if_returns_404_if_the_address_doesnt_exist():
     response = client.put(url_for('users_address_bp.users_address_edit', user_id=1, address_id=10),
                           json={"street": "Fake street"})
 
