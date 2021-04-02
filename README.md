@@ -8,6 +8,7 @@
 | [users_create](#users_create)                          | POST     | /api/users                                   |
 | [users_address_create](#users_address_create) *        | POST     | /api/users/{user_id}/address                 |
 | [users_address_get_all](#users_address_get_all) *      | GET      | /api/users/{user_id}/address                 |
+| [users_address_get](#users_address_get) *              | GET      | /api/users/{user_id}/address/{address_id}    |
 | [users_address_edit](#users_address_edit) *            | PUT      | /api/users/{user_id}/address/{address_id}    |
 | [users_address_delete](#users_address_delete) *        | DELETE   | /api/users/{user_id}/address/{address_id}    |
 
@@ -171,6 +172,40 @@ Errors
 `[status_code]: [message]`
 
 - 401: Could not verify
+- 500: Unable to execute
+
+### users_address_get
+
+__Response:__
+
+Success - 200
+
+```json
+{
+  "status": "Success",
+  "status_code": 200,
+  "message": "Address received successfully",
+  "data": {
+    "user_id": 1,
+    "address": {
+        "id": 1,
+        "street": "Fake street",
+        "number": "S/N",
+        "district": "Fake district",
+        "zipcode": "60000-000",
+        "city": "Fake city",
+        "state": "Fake state"
+    }
+  }
+}
+```
+
+Errors
+
+`[status_code]: [message]`
+
+- 401: Could not verify
+- 404: Address not found
 - 500: Unable to execute
 
 ### users_address_edit

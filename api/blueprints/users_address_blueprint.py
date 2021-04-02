@@ -80,6 +80,34 @@ def users_address_get_all(current_user, user_id):
             return error_response(msg="Unable to execute", code=500)
 
 
+@users_address_bp.route('/users/<user_id>/address/<address_id>', methods=['GET'])
+@token_required
+def users_address_get(current_user, user_id, address_id):
+    if str(current_user.id) != user_id:
+        return error_response(msg="Could not verify", code=401)
+
+    if request.method == "GET":
+        try:
+            address = UsersAddressModel.query.filter_by(id=address_id, user_id=user_id).first()
+
+            if not address:
+                return error_response(msg="Address not found", code=404)
+
+            users_address_schema = UsersAddressSchema()
+            response = {
+                "status": "Success",
+                "status_code": 200,
+                "message": "Address received successfully",
+                "data": {
+                    "user_id": current_user.id,
+                    "address": users_address_schema.dump(address)
+                }
+            }
+            return response, 200
+        except Exception:
+            return error_response(msg="Unable to execute", code=500)
+
+
 @users_address_bp.route('/users/<user_id>/address/<address_id>', methods=["PUT"])
 @token_required
 def users_address_edit(current_user, user_id, address_id):
