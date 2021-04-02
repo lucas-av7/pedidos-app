@@ -20,6 +20,14 @@ def test_if_users_address_route_accept_post():
 
 
 def test_if_login_with_success():
+    # Creating user for testing
+    client.post(url_for('users_bp.users_create'), json={
+        "name": "Lucas Vasconcelos",
+        "email": "lucas@email.com",
+        "phone": "(85) 90000-0000",
+        "password": "password123"
+    })
+
     response = client.post(url_for('user_login_bp.login'), headers={
                            "Authorization": "Basic {}"
                            .format(base64.b64encode(b"lucas@email.com:password123").decode("utf8"))})
