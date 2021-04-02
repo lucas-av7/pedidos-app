@@ -4,9 +4,53 @@
 
 | Name                                                   | Method   | Path                                         |
 |--------------------------------------------------------|----------|----------------------------------------------|
+| [login](#login)                                        | POST     | /api/login                                   |
 | [users_create](#users_create)                          | POST     | /api/users                                   |
 | [users_address_create](#users_address_create)          | POST     | /api/users/{user_id}/address                 |
-| [users_address_edit](#users_address_edit)              | POST     | /api/users/{user_id}/address/{address_id}    |
+| [users_address_edit](#users_address_edit) *            | POST     | /api/users/{user_id}/address/{address_id}    |
+
+\* [Authorization header required](#authorization-header-required)
+
+## Login
+
+### Basic Auth
+
+__Expected Header:__
+
+```http
+Authorization: Basic email:password
+```
+
+__Response:__
+
+Success - 200
+
+```json
+{
+  "status": "Success",
+  "status_code": 200,
+  "message": "Validated successfuly",
+  "data": {
+      "token": "<token>",
+      "exp": "<datetime.utcnow() + timedelta(days=30)>"
+  }
+}
+```
+
+Errors
+
+`[status_code]: [message]`
+
+- 401: Could not verify
+- 401: User not found
+
+### Authorization header required
+
+__Expected Header:__
+
+```http
+Authorization: Bearer <token>
+```
 
 ## Route methods expected JSON and response
 
@@ -94,7 +138,7 @@ Errors
 - 406: Payload is not a JSON
 - 500: Unable to execute
 
-### users_address_edit
+### users_address_edit [*](#authorization-header-required)
 
 __Expected JSON:__
 
