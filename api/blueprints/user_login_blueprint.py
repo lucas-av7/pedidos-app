@@ -1,4 +1,3 @@
-# from api import app
 from flask import Blueprint, request
 from api.utils.responses import error_response
 from datetime import datetime, timedelta
@@ -24,7 +23,7 @@ def login():
 
     if user.password == auth.password:
         payload = {
-            "exp": datetime.utcnow() + timedelta(minutes=5),
+            "exp": datetime.utcnow() + timedelta(days=30),
             "iat": datetime.utcnow(),
             "sub": user.email
         }
@@ -37,7 +36,7 @@ def login():
             "message": "Validated successfuly",
             "data": {
                 "token": token,
-                "exp": datetime.now() + timedelta(hours=12)
+                "exp": datetime.utcnow() + timedelta(days=30)
             }
         }
 
