@@ -8,6 +8,7 @@
 | [users_create](#users_create)                          | POST     | /api/users                                   |
 | [users_get](#users_get) *                              | GET      | /api/users/{user_id}                         |
 | [users_edit](#users_edit) *                            | PUT      | /api/users/{user_id}                         |
+| [users_password_edit](#users_password_edit) *          | PUT      | /api/users/{user_id}/password                |
 | [users_address_create](#users_address_create) *        | POST     | /api/users/{user_id}/address                 |
 | [users_address_get_all](#users_address_get_all) *      | GET      | /api/users/{user_id}/address                 |
 | [users_address_get](#users_address_get) *              | GET      | /api/users/{user_id}/address/{address_id}    |
@@ -161,6 +162,39 @@ Errors
 
 - 400: Fields missing in JSON
 - 401: Could not verify
+- 406: Payload is not a JSON
+- 500: Unable to execute
+
+### users_password_edit
+
+__Expected JSON:__
+
+```json
+{
+  "password": "password123",
+  "new_password": "newpassword123",
+}
+```
+
+__Response:__
+
+Success - 200
+
+```json
+{
+  "status": "Success",
+  "status_code": 200,
+  "message": "Password edited successfully",
+}
+```
+
+Errors
+
+`[status_code]: [message]`
+
+- 400: Fields missing in JSON
+- 401: Could not verify
+- 401: Incorrect password
 - 406: Payload is not a JSON
 - 500: Unable to execute
 

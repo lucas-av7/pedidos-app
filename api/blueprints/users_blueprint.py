@@ -121,3 +121,45 @@ def users_edit(current_user, user_id):
             return error_response(msg="Unable to execute", code=500)
         finally:
             db.session.close()
+
+
+@users_bp.route('/users/<user_id>/password', methods=['PUT'])
+@token_required
+def users_password_edit(current_user, user_id):
+    if not request.is_json:
+        return error_response(msg="Payload is not a JSON", code=406)
+
+    if str(current_user.id) != user_id:
+        return error_response(msg="Could not verify", code=401)
+
+    if request.method == "PUT":
+        try:
+            required_fields = ["password", "new_password"]
+            data = request.get_json()
+
+            for field in required_fields:
+                if field not in data:
+                    return error_response(msg="Fields missing in JSON", code=400)
+
+            user = UsersModel.query.filter_by(id=user_id).first()
+
+            if not sha256_crypt.verify(data["password"], user.password):
+                return error_response(msg="Incorrect password", code=401)
+
+            user.password = sha256_crypt.hash(data["new_password"])
+            user.updated_at = datetime.now()
+
+            db.session.commit()
+
+            response = {
+                "status": "Success",
+                "status_code": 200,
+                "message": "Password edited successfully"
+            }
+
+            return response, 200
+        except Exception:
+            db.session.rollback()
+            return error_response(msg="Unable to execute", code=500)
+        finally:
+            db.session.close()
