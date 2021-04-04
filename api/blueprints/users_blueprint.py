@@ -1,5 +1,6 @@
 from flask import Blueprint, request
 from api.models.users_model import UsersModel, UsersSchema
+from api.utils.decorators import token_required
 from api.utils.responses import error_response
 from api.models import db
 
@@ -53,3 +54,24 @@ def users_create():
             return error_response(msg="Unable to execute", code=500)
         finally:
             db.session.close()
+
+
+@users_bp.route('/users/<user_id>', methods=['GET'])
+@token_required
+def users_get(current_user, user_id):
+    if str(current_user.id) != user_id:
+        return error_response(msg="Could not verify", code=401)
+
+    if request.method == "GET":
+        try:
+            address = UsersModel.query.filter_by(id=user_id).first()
+            users_schema = UsersSchema()
+            response = {
+                "status": "Success",
+                "status_code": 200,
+                "message": "User received successfully",
+                "data": users_schema.dump(address)
+            }
+            return response, 200
+        except Exception:
+            return error_response(msg="Unable to execute", code=500)

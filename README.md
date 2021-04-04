@@ -6,6 +6,7 @@
 |--------------------------------------------------------|----------|----------------------------------------------|
 | [login](#login)                                        | POST     | /api/login                                   |
 | [users_create](#users_create)                          | POST     | /api/users                                   |
+| [users_get](#users_get) *                              | GET      | /api/users/{user_id}                         |
 | [users_address_create](#users_address_create) *        | POST     | /api/users/{user_id}/address                 |
 | [users_address_get_all](#users_address_get_all) *      | GET      | /api/users/{user_id}/address                 |
 | [users_address_get](#users_address_get) *              | GET      | /api/users/{user_id}/address/{address_id}    |
@@ -95,6 +96,32 @@ Errors
 - 400: The values of the JSON have invalid types
 - 406: Payload is not a JSON
 - 422: E-mail is already in use
+- 500: Unable to execute
+
+### users_get
+
+__Response:__
+
+Success - 200
+
+```json
+{
+  "status": "Success",
+  "status_code": 200,
+  "message": "User received successfully",
+  "data": {
+      "id": 1,
+      "name": "Lucas Vasconcelos",
+      "email": "lucas@email.com",
+      "phone": "(85) 90000-0000"
+}
+```
+
+Errors
+
+`[status_code]: [message]`
+
+- 401: Could not verify
 - 500: Unable to execute
 
 ### users_address_create
