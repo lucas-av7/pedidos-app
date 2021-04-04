@@ -48,7 +48,8 @@ def test_if_register_users_with_success():
         "data": {
             "id": 2,
             "name": "Lucas Vasconcelos 2",
-            "email": "lucas_2@email.com"
+            "email": "lucas_2@email.com",
+            "phone": "(85) 90000-0000"
         }
     }
 

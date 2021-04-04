@@ -52,7 +52,7 @@ def test_if_UsersSchema_returns_only_id_name_email():
     assert "id" in serialized
     assert "name" in serialized
     assert "email" in serialized
-    assert "phone" not in serialized
+    assert "phone" in serialized
     assert "password" not in serialized
     assert "created_at" not in serialized
     assert "updated_at" not in serialized

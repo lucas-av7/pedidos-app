@@ -82,7 +82,8 @@ Success - 201
   "data": {
       "id": 1,
       "name": "Lucas Vasconcelos",
-      "email": "lucas@email.com"
+      "email": "lucas@email.com",
+      "phone": "(85) 90000-0000"
 }
 ```
 
