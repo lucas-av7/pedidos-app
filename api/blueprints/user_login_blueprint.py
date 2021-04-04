@@ -25,7 +25,7 @@ def login():
         payload = {
             "exp": datetime.utcnow() + timedelta(days=30),
             "iat": datetime.utcnow(),
-            "sub": user.email
+            "sub": user.id
         }
 
         token = jwt.encode(payload, secret_key, algorithm="HS256")

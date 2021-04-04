@@ -12,7 +12,7 @@ def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         if current_app.testing:
-            current_user = UsersModel.query.filter_by(email="lucas@email.com").first()
+            current_user = UsersModel.query.filter_by(id=1).first()
             return f(current_user, *args, **kwargs)
 
         auth_header = request.headers.get('Authorization')
@@ -28,7 +28,7 @@ def token_required(f):
 
         try:
             data = jwt.decode(token, secret_key, algorithms=["HS256"])
-            current_user = UsersModel.query.filter_by(email=data["sub"]).first()
+            current_user = UsersModel.query.filter_by(id=data["sub"]).first()
         except Exception:
             return error_response(msg="Token is invalid or expired", code=401)
         return f(current_user, *args, **kwargs)
