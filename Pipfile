@@ -12,6 +12,7 @@ psycopg2-binary = "*"
 flask-marshmallow = "*"
 marshmallow-sqlalchemy = "*"
 pyjwt = "==2.0.1"
+passlib = "==1.7.4"
 
 [dev-packages]
 ipdb = "==0.13.7"

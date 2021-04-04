@@ -4,6 +4,7 @@ from api.utils.decorators import token_required
 from api.utils.responses import error_response
 from api.models import db
 from datetime import datetime
+from passlib.hash import sha256_crypt
 
 users_bp = Blueprint('users_bp', __name__)
 
@@ -34,7 +35,7 @@ def users_create():
                 name=data["name"],
                 email=data["email"],
                 phone=data["phone"],
-                password=data["password"]
+                password=sha256_crypt.hash(data["password"])
             )
 
             db.session.add(new_user)

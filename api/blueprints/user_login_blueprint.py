@@ -2,6 +2,7 @@ from flask import Blueprint, request
 from api.utils.responses import error_response
 from datetime import datetime, timedelta
 from api.models.users_model import UsersModel
+from passlib.hash import sha256_crypt
 import os
 import jwt
 
@@ -21,7 +22,7 @@ def login():
     if not user:
         return error_response(msg="User not found", code=401)
 
-    if user.password == auth.password:
+    if sha256_crypt.verify(auth.password, user.password):
         payload = {
             "exp": datetime.utcnow() + timedelta(days=30),
             "iat": datetime.utcnow(),
