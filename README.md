@@ -7,6 +7,7 @@
 | [login](#login)                                        | POST     | /api/login                                   |
 | [users_create](#users_create)                          | POST     | /api/users                                   |
 | [users_get](#users_get) *                              | GET      | /api/users/{user_id}                         |
+| [users_edit](#users_edit) *                            | PUT      | /api/users/{user_id}                         |
 | [users_address_create](#users_address_create) *        | POST     | /api/users/{user_id}/address                 |
 | [users_address_get_all](#users_address_get_all) *      | GET      | /api/users/{user_id}/address                 |
 | [users_address_get](#users_address_get) *              | GET      | /api/users/{user_id}/address/{address_id}    |
@@ -122,6 +123,45 @@ Errors
 `[status_code]: [message]`
 
 - 401: Could not verify
+- 500: Unable to execute
+
+### users_edit
+
+__Expected JSON:__
+
+```json
+{
+  "name": "User edited",
+  "email": "edited@email.com",
+  "phone": "(85) 90000-0000"
+}
+```
+
+__Response:__
+
+Success - 200
+
+```json
+{
+  "status": "Success",
+  "status_code": 200,
+  "message": "User edited successfully",
+  "data": {
+    "id": 1,
+    "name": "User edited",
+    "email": "edited@email.com",
+    "phone": "(85) 90000-0000"
+  }
+}
+```
+
+Errors
+
+`[status_code]: [message]`
+
+- 400: Fields missing in JSON
+- 401: Could not verify
+- 406: Payload is not a JSON
 - 500: Unable to execute
 
 ### users_address_create

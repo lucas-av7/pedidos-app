@@ -3,6 +3,7 @@ from api.models.users_model import UsersModel, UsersSchema
 from api.utils.decorators import token_required
 from api.utils.responses import error_response
 from api.models import db
+from datetime import datetime
 
 users_bp = Blueprint('users_bp', __name__)
 
@@ -75,3 +76,47 @@ def users_get(current_user, user_id):
             return response, 200
         except Exception:
             return error_response(msg="Unable to execute", code=500)
+
+
+@users_bp.route('/users/<user_id>', methods=['PUT'])
+@token_required
+def users_edit(current_user, user_id):
+    if not request.is_json:
+        return error_response(msg="Payload is not a JSON", code=406)
+
+    if str(current_user.id) != user_id:
+        return error_response(msg="Could not verify", code=401)
+
+    if request.method == "PUT":
+        try:
+            user = UsersModel.query.filter_by(id=user_id).first()
+
+            required_fields = ["name", "email", "phone"]
+
+            data = request.get_json()
+            for field in required_fields:
+                if field not in data:
+                    return error_response(msg="Fields missing in JSON", code=400)
+
+            user.name = data["name"]
+            user.email = data["email"]
+            user.phone = data["phone"]
+            user.updated_at = datetime.now()
+
+            db.session.commit()
+
+            users_schema = UsersSchema()
+
+            response = {
+                "status": "Success",
+                "status_code": 200,
+                "message": "User edited successfully",
+                "data": users_schema.dump(user)
+            }
+
+            return response, 200
+        except Exception:
+            db.session.rollback()
+            return error_response(msg="Unable to execute", code=500)
+        finally:
+            db.session.close()
