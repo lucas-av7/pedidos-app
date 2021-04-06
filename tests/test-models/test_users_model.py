@@ -15,22 +15,6 @@ def test_if_users_has_expectd_columns():
         assert hasattr(users_model.UsersModel, column)
 
 
-def test_if_users_is_correctly_instantiated():
-    global new_user  # for using in another test
-    new_user = users_model.UsersModel(
-        name="Lucas",
-        email="lucas@email.com",
-        phone="(00) 00000-0000",
-        password="12345",
-    )
-
-    assert new_user.name == "Lucas"
-    assert new_user.email == "lucas@email.com"
-    assert new_user.phone == "(00) 00000-0000"
-    assert new_user.password == "12345"
-    assert str(new_user) == "<User: Lucas>"
-
-
 def test_if_users_has_ma_schema():
     assert hasattr(users_model, "UsersSchema")
 
@@ -42,6 +26,22 @@ def test_if_UsersSchema_extends_ma_sqlalchemy_schema():
 def test_if_UsersSchema_has_Meta_and_points_to_UsersModel():
     assert hasattr(users_model.UsersSchema, "Meta")
     assert users_model.UsersSchema.Meta.model == users_model.UsersModel
+
+
+new_user = users_model.UsersModel(
+    name="Lucas",
+    email="lucas@email.com",
+    phone="(00) 00000-0000",
+    password="12345",
+)
+
+
+def test_if_users_is_correctly_instantiated():
+    assert new_user.name == "Lucas"
+    assert new_user.email == "lucas@email.com"
+    assert new_user.phone == "(00) 00000-0000"
+    assert new_user.password == "12345"
+    assert str(new_user) == "<User: Lucas>"
 
 
 def test_if_UsersSchema_returns_only_id_name_email():
