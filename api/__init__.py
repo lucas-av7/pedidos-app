@@ -6,7 +6,7 @@ from .blueprints.users_address_blueprint import users_address_bp
 from .blueprints.user_login_blueprint import user_login_bp
 from .models import configure_db
 from dotenv import load_dotenv
-from .utils.responses import error_response
+from .utils import response
 load_dotenv()
 
 
@@ -32,9 +32,9 @@ app.register_blueprint(user_login_bp, url_prefix='/api')
 # Custom error response for all api endpoints
 @app.errorhandler(405)
 def not_allowed(e):
-    return error_response(msg="Method not allowed", code=405)
+    return response(msg="Method not allowed", code=405)
 
 
 @app.errorhandler(404)
 def not_found(e):
-    return error_response(msg="API endpoint not found", code=404)
+    return response(msg="API endpoint not found", code=404)

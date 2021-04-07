@@ -1,7 +1,7 @@
 from flask import Blueprint, request
 from api.models.users_model import UsersModel, UsersSchema
 from api.utils.decorators import token_required
-from api.utils.responses import error_response, success_response
+from api.utils import response
 from api.models import db
 from datetime import datetime
 from passlib.hash import sha256_crypt
@@ -12,7 +12,7 @@ users_bp = Blueprint('users_bp', __name__)
 @users_bp.route('/users', methods=['POST'])
 def users_create():
     if not request.is_json:
-        return error_response(msg="Payload is not a JSON", code=406)
+        return response(msg="Payload is not a JSON", code=406)
 
     if request.method == 'POST':
         data = request.get_json()
@@ -20,16 +20,16 @@ def users_create():
         required_fields = ["name", "email", "phone", "password"]
         for field in required_fields:
             if field not in data:
-                return error_response(msg="Fields missing in JSON", code=400)
+                return response(msg="Fields missing in JSON", code=400)
 
         if "@" not in data["email"] or "." not in data["email"]:
-            return error_response(msg="The values of the JSON have invalid types", code=400)
+            return response(msg="The values of the JSON have invalid types", code=400)
 
         try:
             email_exists = UsersModel.query.filter_by(email=data["email"]).first()
 
             if email_exists is not None:
-                return error_response(msg="E-mail is already in use", code=422)
+                return response(msg="E-mail is already in use", code=422)
 
             new_user = UsersModel(
                 name=data["name"],
@@ -45,10 +45,10 @@ def users_create():
 
             data = users_schema.dump(new_user)
 
-            return success_response(msg="User registered successfully", code=201, data=data)
+            return response(msg="User registered successfully", code=201, data=data)
         except Exception:
             db.session.rollback()
-            return error_response(msg="Unable to execute", code=500)
+            return response(msg="Unable to execute", code=500)
         finally:
             db.session.close()
 
@@ -57,7 +57,7 @@ def users_create():
 @token_required
 def users_get(current_user, user_id):
     if str(current_user.id) != user_id:
-        return error_response(msg="Could not verify", code=401)
+        return response(msg="Could not verify", code=401)
 
     if request.method == "GET":
         try:
@@ -66,19 +66,19 @@ def users_get(current_user, user_id):
 
             data = users_schema.dump(address)
 
-            return success_response(msg="User received successfully", code=200, data=data)
+            return response(msg="User received successfully", code=200, data=data)
         except Exception:
-            return error_response(msg="Unable to execute", code=500)
+            return response(msg="Unable to execute", code=500)
 
 
 @users_bp.route('/users/<user_id>', methods=['PUT'])
 @token_required
 def users_edit(current_user, user_id):
     if not request.is_json:
-        return error_response(msg="Payload is not a JSON", code=406)
+        return response(msg="Payload is not a JSON", code=406)
 
     if str(current_user.id) != user_id:
-        return error_response(msg="Could not verify", code=401)
+        return response(msg="Could not verify", code=401)
 
     if request.method == "PUT":
         try:
@@ -89,7 +89,7 @@ def users_edit(current_user, user_id):
             data = request.get_json()
             for field in required_fields:
                 if field not in data:
-                    return error_response(msg="Fields missing in JSON", code=400)
+                    return response(msg="Fields missing in JSON", code=400)
 
             user.name = data["name"]
             user.email = data["email"]
@@ -102,10 +102,10 @@ def users_edit(current_user, user_id):
 
             data = users_schema.dump(user)
 
-            return success_response(msg="User edited successfully", code=200, data=data)
+            return response(msg="User edited successfully", code=200, data=data)
         except Exception:
             db.session.rollback()
-            return error_response(msg="Unable to execute", code=500)
+            return response(msg="Unable to execute", code=500)
         finally:
             db.session.close()
 
@@ -114,10 +114,10 @@ def users_edit(current_user, user_id):
 @token_required
 def users_password_edit(current_user, user_id):
     if not request.is_json:
-        return error_response(msg="Payload is not a JSON", code=406)
+        return response(msg="Payload is not a JSON", code=406)
 
     if str(current_user.id) != user_id:
-        return error_response(msg="Could not verify", code=401)
+        return response(msg="Could not verify", code=401)
 
     if request.method == "PUT":
         try:
@@ -126,21 +126,21 @@ def users_password_edit(current_user, user_id):
 
             for field in required_fields:
                 if field not in data:
-                    return error_response(msg="Fields missing in JSON", code=400)
+                    return response(msg="Fields missing in JSON", code=400)
 
             user = UsersModel.query.filter_by(id=user_id).first()
 
             if not sha256_crypt.verify(data["password"], user.password):
-                return error_response(msg="Incorrect password", code=401)
+                return response(msg="Incorrect password", code=401)
 
             user.password = sha256_crypt.hash(data["new_password"])
             user.updated_at = datetime.now()
 
             db.session.commit()
 
-            return success_response(msg="Password edited successfully", code=200)
+            return response(msg="Password edited successfully", code=200)
         except Exception:
             db.session.rollback()
-            return error_response(msg="Unable to execute", code=500)
+            return response(msg="Unable to execute", code=500)
         finally:
             db.session.close()

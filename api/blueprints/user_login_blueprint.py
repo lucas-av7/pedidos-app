@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from api.utils.responses import error_response, success_response
+from api.utils import response
 from datetime import datetime, timedelta
 from api.models.users_model import UsersModel
 from passlib.hash import sha256_crypt
@@ -15,12 +15,12 @@ def login():
 
     auth = request.authorization
     if not auth or not auth.username or not auth.password:
-        return error_response(msg="Could not verify", code=401)
+        return response(msg="Could not verify", code=401)
 
     user = UsersModel.query.filter_by(email=auth.username).first()
 
     if not user:
-        return error_response(msg="User not found", code=401)
+        return response(msg="User not found", code=401)
 
     if sha256_crypt.verify(auth.password, user.password):
         payload = {
@@ -36,6 +36,6 @@ def login():
             "exp": datetime.utcnow() + timedelta(days=30)
         }
 
-        return success_response(msg="Validated successfuly", code=200, data=data)
+        return response(msg="Validated successfuly", code=200, data=data)
 
-    return error_response(msg="Could not verify", code=401)
+    return response(msg="Could not verify", code=401)

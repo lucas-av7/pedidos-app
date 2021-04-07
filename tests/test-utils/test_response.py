@@ -1,12 +1,12 @@
-from api.utils import responses
+from api import utils
 
 
-def test_if_has_success_response_method():
-    assert hasattr(responses, "success_response")
+def test_if_has_response_method():
+    assert hasattr(utils, "response")
 
 
 def test_if_success_response_returns_expected_value_without_data():
-    response = responses.success_response(msg="Store created successfully", code=200)
+    response = utils.response(msg="Store created successfully", code=200)
     expected = {
         "status": "Success",
         "status_code": 200,
@@ -24,7 +24,7 @@ def test_if_success_response_returns_expected_value_with_data():
         "phone": "(85) 90000-0000"
     }
 
-    response = responses.success_response(msg="User created successfully", code=201, data=data)
+    response = utils.response(msg="User created successfully", code=201, data=data)
     expected = {
         "status": "Success",
         "status_code": 201,
@@ -33,3 +33,14 @@ def test_if_success_response_returns_expected_value_with_data():
     }
     assert expected == response[0]
     assert 201 == response[1]
+
+
+def test_if_error_response_returns_expected_value():
+    response = utils.response(msg="Method not allowed", code=405)
+    expected = {
+        "status": "Error",
+        "status_code": 405,
+        "message": "Method not allowed"
+    }
+    assert expected == response[0]
+    assert 405 == response[1]
