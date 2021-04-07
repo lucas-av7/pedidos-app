@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from api.utils.responses import error_response
+from api.utils.responses import error_response, success_response
 from api.models.store_model import StoreModel, StoreSchema
 from api.models import db
 
@@ -40,14 +40,9 @@ def store_create():
 
             store_schema = StoreSchema()
 
-            response = {
-                "status": "Success",
-                "status_code": 201,
-                "message": "Store created successfully",
-                "data": store_schema.dump(new_store)
-            }
+            data = store_schema.dump(new_store)
 
-            return response, 201
+            return success_response(msg="Store created successfully", code=201, data=data)
         except Exception:
             db.session.rollback()
             return error_response(msg="Unable to execute", code=500)

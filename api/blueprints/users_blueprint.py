@@ -1,7 +1,7 @@
 from flask import Blueprint, request
 from api.models.users_model import UsersModel, UsersSchema
 from api.utils.decorators import token_required
-from api.utils.responses import error_response
+from api.utils.responses import error_response, success_response
 from api.models import db
 from datetime import datetime
 from passlib.hash import sha256_crypt
@@ -43,14 +43,9 @@ def users_create():
 
             users_schema = UsersSchema()
 
-            response = {
-                "status": "Success",
-                "status_code": 201,
-                "message": "User registered successfully",
-                "data": users_schema.dump(new_user)
-            }
+            data = users_schema.dump(new_user)
 
-            return response, 201
+            return success_response(msg="User registered successfully", code=201, data=data)
         except Exception:
             db.session.rollback()
             return error_response(msg="Unable to execute", code=500)
@@ -68,13 +63,10 @@ def users_get(current_user, user_id):
         try:
             address = UsersModel.query.filter_by(id=user_id).first()
             users_schema = UsersSchema()
-            response = {
-                "status": "Success",
-                "status_code": 200,
-                "message": "User received successfully",
-                "data": users_schema.dump(address)
-            }
-            return response, 200
+
+            data = users_schema.dump(address)
+
+            return success_response(msg="User received successfully", code=200, data=data)
         except Exception:
             return error_response(msg="Unable to execute", code=500)
 
@@ -108,14 +100,9 @@ def users_edit(current_user, user_id):
 
             users_schema = UsersSchema()
 
-            response = {
-                "status": "Success",
-                "status_code": 200,
-                "message": "User edited successfully",
-                "data": users_schema.dump(user)
-            }
+            data = users_schema.dump(user)
 
-            return response, 200
+            return success_response(msg="User edited successfully", code=200, data=data)
         except Exception:
             db.session.rollback()
             return error_response(msg="Unable to execute", code=500)
@@ -151,13 +138,7 @@ def users_password_edit(current_user, user_id):
 
             db.session.commit()
 
-            response = {
-                "status": "Success",
-                "status_code": 200,
-                "message": "Password edited successfully"
-            }
-
-            return response, 200
+            return success_response(msg="Password edited successfully", code=200)
         except Exception:
             db.session.rollback()
             return error_response(msg="Unable to execute", code=500)

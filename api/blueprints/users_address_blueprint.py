@@ -1,6 +1,6 @@
 from flask import Blueprint, request
 from api.models.users_address_model import UsersAddressModel, UsersAddressSchema
-from api.utils.responses import error_response
+from api.utils.responses import error_response, success_response
 from api.utils.decorators import token_required
 from api.models import db
 from datetime import datetime
@@ -41,14 +41,9 @@ def users_address_create(current_user, user_id):
 
             users_address_schema = UsersAddressSchema()
 
-            response = {
-                "status": "Success",
-                "status_code": 201,
-                "message": "Address registered successfully",
-                "data": users_address_schema.dump(new_address)
-            }
+            data = users_address_schema.dump(new_address)
 
-            return response, 201
+            return success_response(msg="Address registered successfully", code=201, data=data)
         except Exception:
             db.session.rollback()
             return error_response(msg="Unable to execute", code=500)
@@ -66,16 +61,13 @@ def users_address_get_all(current_user, user_id):
         try:
             addresses = UsersAddressModel.query.filter_by(user_id=user_id).all()
             users_addresses_schema = UsersAddressSchema(many=True)
-            response = {
-                "status": "Success",
-                "status_code": 200,
-                "message": "Addresses received successfully",
-                "data": {
-                    "user_id": current_user.id,
-                    "addresses": users_addresses_schema.dump(addresses)
-                }
+
+            data = {
+                "user_id": current_user.id,
+                "addresses": users_addresses_schema.dump(addresses)
             }
-            return response, 200
+
+            return success_response(msg="Addresses received successfully", code=200, data=data)
         except Exception:
             return error_response(msg="Unable to execute", code=500)
 
@@ -94,16 +86,13 @@ def users_address_get(current_user, user_id, address_id):
                 return error_response(msg="Address not found", code=404)
 
             users_address_schema = UsersAddressSchema()
-            response = {
-                "status": "Success",
-                "status_code": 200,
-                "message": "Address received successfully",
-                "data": {
-                    "user_id": current_user.id,
-                    "address": users_address_schema.dump(address)
-                }
+
+            data = {
+                "user_id": current_user.id,
+                "address": users_address_schema.dump(address)
             }
-            return response, 200
+
+            return success_response(msg="Address received successfully", code=200, data=data)
         except Exception:
             return error_response(msg="Unable to execute", code=500)
 
@@ -142,14 +131,9 @@ def users_address_edit(current_user, user_id, address_id):
 
             users_address_schema = UsersAddressSchema()
 
-            response = {
-                "status": "Success",
-                "status_code": 200,
-                "message": "Address edited successfully",
-                "data": users_address_schema.dump(address)
-            }
+            data = users_address_schema.dump(address)
 
-            return response, 200
+            return success_response(msg="Address edited successfully", code=200, data=data)
         except Exception:
             db.session.rollback()
             return error_response(msg="Unable to execute", code=500)
@@ -173,13 +157,7 @@ def users_address_delete(current_user, user_id, address_id):
             db.session.delete(address)
             db.session.commit()
 
-            response = {
-                "status": "Success",
-                "status_code": 200,
-                "message": "Address deleted successfully",
-            }
-
-            return response, 200
+            return success_response(msg="Address deleted successfully", code=200)
         except Exception:
             db.session.rollback()
             return error_response(msg="Unable to execute", code=500)

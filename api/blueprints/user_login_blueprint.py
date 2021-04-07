@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from api.utils.responses import error_response
+from api.utils.responses import error_response, success_response
 from datetime import datetime, timedelta
 from api.models.users_model import UsersModel
 from passlib.hash import sha256_crypt
@@ -31,16 +31,11 @@ def login():
 
         token = jwt.encode(payload, secret_key, algorithm="HS256")
 
-        response = {
-            "status": "Success",
-            "status_code": 200,
-            "message": "Validated successfuly",
-            "data": {
-                "token": token,
-                "exp": datetime.utcnow() + timedelta(days=30)
-            }
+        data = {
+            "token": token,
+            "exp": datetime.utcnow() + timedelta(days=30)
         }
 
-        return response, 200
+        return success_response(msg="Validated successfuly", code=200, data=data)
 
     return error_response(msg="Could not verify", code=401)
