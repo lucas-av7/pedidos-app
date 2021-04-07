@@ -1,5 +1,6 @@
 import os
 from flask import Flask
+from .blueprints.store_blueprint import store_bp
 from .blueprints.users_blueprint import users_bp
 from .blueprints.users_address_blueprint import users_address_bp
 from .blueprints.user_login_blueprint import user_login_bp
@@ -22,6 +23,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 configure_db(app)
 
+app.register_blueprint(store_bp, url_prefix='/api')
 app.register_blueprint(users_bp, url_prefix='/api')
 app.register_blueprint(users_address_bp, url_prefix='/api')
 app.register_blueprint(user_login_bp, url_prefix='/api')

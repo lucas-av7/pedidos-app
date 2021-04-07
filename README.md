@@ -14,6 +14,7 @@
 | [users_address_get](#users_address_get) *              | GET      | /api/users/{user_id}/address/{address_id}    |
 | [users_address_edit](#users_address_edit) *            | PUT      | /api/users/{user_id}/address/{address_id}    |
 | [users_address_delete](#users_address_delete) *        | DELETE   | /api/users/{user_id}/address/{address_id}    |
+| [store_create](#store_create) *                        | POST     | /api/store                                   |
 
 \* [Authorization header required](#authorization-header-required)
 
@@ -376,6 +377,53 @@ Errors
 
 - 401: Could not verify
 - 404: Address not found
+- 500: Unable to execute
+
+### store_create
+
+__Expected JSON:__
+
+```json
+{
+  "name": "Fake store",
+  "phone": "(85) 90000-0000",
+  "street": "Fake street",
+  "number": "Fake number",
+  "district": "Fake district",
+  "city": "Fake city",
+  "state": "Fake state"
+}
+```
+
+__Response:__
+
+Success - 201
+
+```json
+{
+  "status": "Success",
+  "status_code": 201,
+  "message": "Store created successfully",
+  "data": {
+      "id": 1,
+      "name": "Fake store",
+      "phone": "(85) 90000-0000",
+      "street": "Fake street",
+      "number": "Fake number",
+      "district": "Fake district",
+      "city": "Fake city",
+      "state": "Fake state"
+  }
+}
+```
+
+Errors
+
+`[status_code]: [message]`
+
+- 400: Fields missing in JSON
+- 400: The database already has a store created
+- 406: Payload is not a JSON
 - 500: Unable to execute
 
 ## Error response example
