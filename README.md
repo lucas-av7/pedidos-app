@@ -173,7 +173,7 @@ __Expected JSON:__
 ```json
 {
   "password": "password123",
-  "new_password": "newpassword123",
+  "new_password": "newpassword123"
 }
 ```
 
@@ -185,7 +185,7 @@ Success - 200
 {
   "status": "Success",
   "status_code": 200,
-  "message": "Password edited successfully",
+  "message": "Password edited successfully"
 }
 ```
 
