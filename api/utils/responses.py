@@ -1,13 +1,10 @@
-import json
-
-
 def error_response(msg, code):
     response = {
         "status": "Error",
         "status_code": code,
         "message": msg
     }
-    return json.dumps(response), code
+    return response, code
 
 
 def success_response(msg, code, data=None):

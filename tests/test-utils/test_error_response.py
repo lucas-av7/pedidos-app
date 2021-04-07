@@ -1,5 +1,4 @@
 from api.utils import responses
-import json
 
 
 def test_if_has_error_response_method():
@@ -13,5 +12,5 @@ def test_if_error_response_returns_expected_value():
         "status_code": 405,
         "message": "Method not allowed"
     }
-    assert json.dumps(expected) == response[0]
+    assert expected == response[0]
     assert 405 == response[1]
