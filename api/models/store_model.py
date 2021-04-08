@@ -24,7 +24,6 @@ class StoreSchema(ma.SQLAlchemySchema):
     class Meta:
         model = StoreModel
 
-    id = ma.auto_field()
     name = ma.auto_field()
     phone = ma.auto_field()
     street = ma.auto_field()

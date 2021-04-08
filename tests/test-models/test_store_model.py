@@ -55,7 +55,6 @@ def test_if_StoreSchema_returns_expected_fields():
 
     serialized = store_schema.dump(new_store)
 
-    assert "id" in serialized
     assert "name" in serialized
     assert "phone" in serialized
     assert "street" in serialized
@@ -63,5 +62,6 @@ def test_if_StoreSchema_returns_expected_fields():
     assert "district" in serialized
     assert "city" in serialized
     assert "state" in serialized
+    assert "id" not in serialized
     assert "created_at" not in serialized
     assert "updated_at" not in serialized

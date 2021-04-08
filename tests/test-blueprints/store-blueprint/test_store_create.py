@@ -62,7 +62,6 @@ def test_if_create_store_with_success():
         "status_code": 201,
         "message": "Store created successfully",
         "data": {
-            "id": 1,
             "name": "Fake store",
             "phone": "(85) 90000-0000",
             "street": "Fake street",
