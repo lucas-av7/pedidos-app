@@ -48,3 +48,20 @@ def store_create():
             return response(msg="Unable to execute", code=500)
         finally:
             db.session.close()
+
+
+@store_bp.route('/store', methods=['GET'])
+def store_get():
+    if request.method == 'GET':
+        try:
+            store = StoreModel.query.first()
+
+            if not store:
+                return response(msg="No store created", code=404)
+
+            store_schema = StoreSchema()
+            data = store_schema.dump(store)
+
+            return response(msg="Store received successfully", code=200, data=data)
+        except Exception:
+            return response(msg="Unable to execute", code=500)

@@ -15,6 +15,7 @@
 | [users_address_edit](#users_address_edit) *            | PUT      | /api/users/{user_id}/address/{address_id}    |
 | [users_address_delete](#users_address_delete) *        | DELETE   | /api/users/{user_id}/address/{address_id}    |
 | [store_create](#store_create) *                        | POST     | /api/store                                   |
+| [store_get](#store_get)                                | POST     | /api/store                                   |
 
 \* [Authorization header required](#authorization-header-required)
 
@@ -38,8 +39,8 @@ Success - 200
   "status_code": 200,
   "message": "Validated successfuly",
   "data": {
-      "token": "<token>",
-      "exp": "<datetime.utcnow() + timedelta(days=30)>"
+    "token": "<token>",
+    "exp": "<datetime.utcnow() + timedelta(days=30)>"
   }
 }
 ```
@@ -84,10 +85,11 @@ Success - 201
   "status_code": 201,
   "message": "User registered successfully",
   "data": {
-      "id": 1,
-      "name": "Lucas Vasconcelos",
-      "email": "lucas@email.com",
-      "phone": "(85) 90000-0000"
+    "id": 1,
+    "name": "Lucas Vasconcelos",
+    "email": "lucas@email.com",
+    "phone": "(85) 90000-0000"
+  }
 }
 ```
 
@@ -113,10 +115,11 @@ Success - 200
   "status_code": 200,
   "message": "User received successfully",
   "data": {
-      "id": 1,
-      "name": "Lucas Vasconcelos",
-      "email": "lucas@email.com",
-      "phone": "(85) 90000-0000"
+    "id": 1,
+    "name": "Lucas Vasconcelos",
+    "email": "lucas@email.com",
+    "phone": "(85) 90000-0000"
+  }
 }
 ```
 
@@ -258,13 +261,13 @@ Success - 200
   "data": {
     "user_id": 1,
     "addresses": [{
-        "id": 1,
-        "street": "Fake street",
-        "number": "S/N",
-        "district": "Fake district",
-        "zipcode": "60000-000",
-        "city": "Fake city",
-        "state": "Fake state"
+      "id": 1,
+      "street": "Fake street",
+      "number": "S/N",
+      "district": "Fake district",
+      "zipcode": "60000-000",
+      "city": "Fake city",
+      "state": "Fake state"
     }]
   }
 }
@@ -291,13 +294,13 @@ Success - 200
   "data": {
     "user_id": 1,
     "address": {
-        "id": 1,
-        "street": "Fake street",
-        "number": "S/N",
-        "district": "Fake district",
-        "zipcode": "60000-000",
-        "city": "Fake city",
-        "state": "Fake state"
+      "id": 1,
+      "street": "Fake street",
+      "number": "S/N",
+      "district": "Fake district",
+      "zipcode": "60000-000",
+      "city": "Fake city",
+      "state": "Fake state"
     }
   }
 }
@@ -405,13 +408,13 @@ Success - 201
   "status_code": 201,
   "message": "Store created successfully",
   "data": {
-      "name": "Fake store",
-      "phone": "(85) 90000-0000",
-      "street": "Fake street",
-      "number": "Fake number",
-      "district": "Fake district",
-      "city": "Fake city",
-      "state": "Fake state"
+    "name": "Fake store",
+    "phone": "(85) 90000-0000",
+    "street": "Fake street",
+    "number": "Fake number",
+    "district": "Fake district",
+    "city": "Fake city",
+    "state": "Fake state"
   }
 }
 ```
@@ -423,6 +426,36 @@ Errors
 - 400: Fields missing in JSON
 - 400: The database already has a store created
 - 406: Payload is not a JSON
+- 500: Unable to execute
+
+### store_get
+
+__Response:__
+
+Success - 200
+
+```json
+{
+  "status": "Success",
+  "status_code": 200,
+  "message": "Store received successfully",
+  "data": {
+    "name": "Fake store",
+    "phone": "(85) 90000-0000",
+    "street": "Fake street",
+    "number": "Fake number",
+    "district": "Fake district",
+    "city": "Fake city",
+    "state": "Fake state"
+  }
+}
+```
+
+Errors
+
+`[status_code]: [message]`
+
+- 404: No store created
 - 500: Unable to execute
 
 ## Error response example
