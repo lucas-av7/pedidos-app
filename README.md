@@ -16,6 +16,7 @@
 | [users_address_delete](#users_address_delete) *        | DELETE   | /api/users/{user_id}/address/{address_id}    |
 | [store_create](#store_create) *                        | POST     | /api/store                                   |
 | [store_get](#store_get)                                | POST     | /api/store                                   |
+| [store_edit](#store_edit) *                            | PUT      | /api/store                                   |
 
 \* [Authorization header required](#authorization-header-required)
 
@@ -456,6 +457,52 @@ Errors
 `[status_code]: [message]`
 
 - 404: No store created
+- 500: Unable to execute
+
+## store_edit
+
+__Expected JSON:__
+
+```json
+{
+  "name": "Fake store edited",
+  "phone": "(85) 90000-0001",
+  "street": "Fake street edited",
+  "number": "Fake number edited",
+  "district": "Fake district edited",
+  "city": "Fake city edited",
+  "state": "Fake state edited"
+}
+```
+
+__Response:__
+
+Success - 200
+
+```json
+{
+  "status": "Success",
+  "status_code": 200,
+  "message": "Store edited successfully",
+  "data": {
+    "name": "Fake store edited",
+    "phone": "(85) 90000-0001",
+    "street": "Fake street edited",
+    "number": "Fake number edited",
+    "district": "Fake district edited",
+    "city": "Fake city edited",
+    "state": "Fake state edited"
+  }
+}
+```
+
+Errors
+
+`[status_code]: [message]`
+
+- 400: Fields missing in JSON
+- 404: No store created
+- 406: Payload is not a JSON
 - 500: Unable to execute
 
 ## Error response example

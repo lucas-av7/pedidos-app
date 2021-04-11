@@ -2,7 +2,7 @@ from api import app
 from flask import url_for
 from tests import client
 from api.models import db
-from test_store_create import valid_store
+from test_store_edit import edited_valid_store
 from api.models.store_model import StoreModel
 import json
 
@@ -25,7 +25,7 @@ def test_if_get_store_with_success():
         "status_code": 200,
         "message": "Store received successfully",
         "data": {
-            **valid_store
+            **edited_valid_store
         }
     }
 
