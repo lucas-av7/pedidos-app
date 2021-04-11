@@ -15,7 +15,7 @@
 | [users_address_edit](#users_address_edit) *            | PUT      | /api/users/{user_id}/address/{address_id}    |
 | [users_address_delete](#users_address_delete) *        | DELETE   | /api/users/{user_id}/address/{address_id}    |
 | [store_create](#store_create) *                        | POST     | /api/store                                   |
-| [store_get](#store_get)                                | POST     | /api/store                                   |
+| [store_get](#store_get)                                | GET      | /api/store                                   |
 | [store_edit](#store_edit) *                            | PUT      | /api/store                                   |
 
 \* [Authorization header required](#authorization-header-required)
