@@ -19,6 +19,7 @@ ipdb = "==0.13.7"
 pytest = "==6.2.2"
 coverage = "*"
 flake8 = "*"
+autopep8 = "*"
 
 [requires]
 python_version = "3.8"
