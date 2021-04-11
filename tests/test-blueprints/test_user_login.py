@@ -1,8 +1,27 @@
 from api import app
 from flask import url_for
 from tests import client
+from api.models import db
+from api.models.users_model import UsersModel
 import json
+import pytest
 import base64
+
+
+@pytest.fixture
+def create_user():
+    response = client.post(url_for('users_bp.users_create'), json={
+        "name": "Lucas Vasconcelos",
+        "email": "lucas@email.com",
+        "phone": "(85) 90000-0000",
+        "password": "password123"
+    })
+
+    yield json.loads(response.data)
+
+    user = UsersModel.query.filter_by(email="lucas@email.com").first()
+    db.session.delete(user)
+    db.session.commit()
 
 
 def test_if_api_has_user_login_bluprint():
@@ -19,15 +38,7 @@ def test_if_users_address_route_accept_post():
     assert 'POST' in methods
 
 
-def test_if_login_with_success():
-    # Creating user for testing
-    client.post(url_for('users_bp.users_create'), json={
-        "name": "Lucas Vasconcelos",
-        "email": "lucas@email.com",
-        "phone": "(85) 90000-0000",
-        "password": "password123"
-    })
-
+def test_if_login_with_success(create_user):
     response = client.post(url_for('user_login_bp.login'), headers={
                            "Authorization": "Basic {}"
                            .format(base64.b64encode(b"lucas@email.com:password123").decode("utf8"))})
@@ -63,7 +74,7 @@ def test_if_get_401_when_user_not_exist():
     assert json.loads(response.data) == expected_return
 
 
-def test_if_get_401_when_password_not_match():
+def test_if_get_401_when_password_not_match(create_user):
     response = client.post(url_for('user_login_bp.login'), headers={
         "Authorization": "Basic {}"
         .format(base64.b64encode(b"lucas@email.com:password").decode("utf8"))})

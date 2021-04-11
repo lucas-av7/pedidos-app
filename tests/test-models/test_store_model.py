@@ -1,4 +1,5 @@
 from api.models import db, ma, store_model
+import pytest
 
 
 def test_if_has_store_model():
@@ -28,18 +29,20 @@ def test_if_StoreSchema_has_Meta_and_points_to_StoreModel():
     assert store_model.StoreSchema.Meta.model == store_model.StoreModel
 
 
-new_store = store_model.StoreModel(
-    name="Fake store",
-    phone="(00) 00000-0000",
-    street="Fake street",
-    number="S/N",
-    district="Fake district",
-    city="Fake city",
-    state="Fake state",
-)
+@pytest.fixture
+def new_store():
+    return store_model.StoreModel(
+        name="Fake store",
+        phone="(00) 00000-0000",
+        street="Fake street",
+        number="S/N",
+        district="Fake district",
+        city="Fake city",
+        state="Fake state",
+    )
 
 
-def test_if_store_is_correctly_instantiated():
+def test_if_store_is_correctly_instantiated(new_store):
     assert new_store.name == "Fake store"
     assert new_store.phone == "(00) 00000-0000"
     assert new_store.street == "Fake street"
@@ -50,7 +53,7 @@ def test_if_store_is_correctly_instantiated():
     assert str(new_store) == "<Store: Fake store>"
 
 
-def test_if_StoreSchema_returns_expected_fields():
+def test_if_StoreSchema_returns_expected_fields(new_store):
     store_schema = store_model.StoreSchema()
 
     serialized = store_schema.dump(new_store)

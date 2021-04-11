@@ -1,4 +1,17 @@
 from api.models import db, ma, users_address_model
+import pytest
+
+
+@pytest.fixture
+def new_address():
+    return users_address_model.UsersAddressModel(
+        street="Fake street",
+        number="S/N",
+        district="Fake district",
+        zipcode="60000-000",
+        city="Fake city",
+        state="Fake state"
+    )
 
 
 def test_if_has_users_address_model():
@@ -22,17 +35,7 @@ def test_if_UserAddress_has_expectd_columns():
     assert hasattr(users_address_model.UsersAddressModel, "updated_at")
 
 
-def test_if_users_is_correctly_instantiated():
-    global new_address  # for using in another test
-    new_address = users_address_model.UsersAddressModel(
-        street="Fake street",
-        number="S/N",
-        district="Fake district",
-        zipcode="60000-000",
-        city="Fake city",
-        state="Fake state"
-    )
-
+def test_if_users_is_correctly_instantiated(new_address):
     assert new_address.street == "Fake street"
     assert new_address.number == "S/N"
     assert new_address.district == "Fake district"
@@ -55,7 +58,7 @@ def test_if_UsersAddressSchema_has_Meta_and_points_to_UsersAddressModel():
     assert users_address_model.UsersAddressSchema.Meta.model == users_address_model.UsersAddressModel
 
 
-def test_if_UsersAddressSchema_returns_all_fields_except_create_and_update():
+def test_if_UsersAddressSchema_returns_all_fields_except_create_and_update(new_address):
     users_address_schema = users_address_model.UsersAddressSchema()
 
     serialized = users_address_schema.dump(new_address)

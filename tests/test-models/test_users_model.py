@@ -1,4 +1,15 @@
 from api.models import db, ma, users_model
+import pytest
+
+
+@pytest.fixture
+def new_user():
+    return users_model.UsersModel(
+        name="Lucas",
+        email="lucas@email.com",
+        phone="(00) 00000-0000",
+        password="12345",
+    )
 
 
 def test_if_has_users_model():
@@ -28,15 +39,7 @@ def test_if_UsersSchema_has_Meta_and_points_to_UsersModel():
     assert users_model.UsersSchema.Meta.model == users_model.UsersModel
 
 
-new_user = users_model.UsersModel(
-    name="Lucas",
-    email="lucas@email.com",
-    phone="(00) 00000-0000",
-    password="12345",
-)
-
-
-def test_if_users_is_correctly_instantiated():
+def test_if_users_is_correctly_instantiated(new_user):
     assert new_user.name == "Lucas"
     assert new_user.email == "lucas@email.com"
     assert new_user.phone == "(00) 00000-0000"
@@ -44,7 +47,7 @@ def test_if_users_is_correctly_instantiated():
     assert str(new_user) == "<User: Lucas>"
 
 
-def test_if_UsersSchema_returns_only_id_name_email():
+def test_if_UsersSchema_returns_only_id_name_email(new_user):
     users_schema = users_model.UsersSchema()
 
     serialized = users_schema.dump(new_user)
