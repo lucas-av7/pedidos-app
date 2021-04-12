@@ -17,7 +17,7 @@ passlib = "==1.7.4"
 [dev-packages]
 ipdb = "==0.13.7"
 pytest = "==6.2.2"
-coverage = "*"
+pytest-cov = "*"
 flake8 = "*"
 autopep8 = "*"
 
